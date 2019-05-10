@@ -23,15 +23,9 @@ public class Pawn extends ChessPiece {
 
         if (cp[x][y] == null)
             res.add(new Point(x, y));
-
-
+        
         calcDiagonal(res, cp, -1, y);
         calcDiagonal(res, cp, 1, y);
-
-
-//        board.getChessPieces()[location.x][location.y] = null;
-//        board.getChessPieces()[location.x][location.y + dir] = this;
-//        location.y = location.y + dir;
 
         return res;
     }
