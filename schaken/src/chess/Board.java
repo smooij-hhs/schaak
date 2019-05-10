@@ -6,6 +6,7 @@ public class Board {
 
     public static final int SIZE = 8;
     private ChessPiece[][] chessPieces = new ChessPiece[SIZE][SIZE];
+    private boolean gameWon = false;
 
     public Board() {
         placePieces();
@@ -53,5 +54,18 @@ public class Board {
 
     public ChessPiece[][] getChessPieces() {
         return chessPieces;
+    }
+
+    public void reset() {
+        chessPieces = new ChessPiece[SIZE][SIZE];
+        placePieces();
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
     }
 }

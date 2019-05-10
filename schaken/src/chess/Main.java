@@ -55,9 +55,22 @@ public class Main {
                 yPos = Character.getNumericValue(input.charAt(2));
             }
 
+            System.out.println();
+            System.out.println();
 
-            System.out.println();
-            System.out.println();
+            if (board.isGameWon()) {
+                System.out.println("Game is won!\ntype 'r' to restart, or 'e' to exit");
+                input = read.nextLine().toLowerCase();
+                switch (input.charAt(0)) {
+                    case 'r':
+                        board.setGameWon(false);
+                        board.reset();
+                        chessPieces = board.getChessPieces();
+                        break;
+                    default:
+                        running = false;
+                }
+            }
         }
 
 

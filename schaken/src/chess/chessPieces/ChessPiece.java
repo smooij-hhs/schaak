@@ -24,6 +24,8 @@ public abstract class ChessPiece {
     public boolean move(int x, int y) {
         if (getPossibleMoves().contains(new Point(x, y))) {
             board.getChessPieces()[location.x][location.y] = null;
+            if (board.getChessPieces()[x][y] instanceof King)
+                board.setGameWon(true);
             board.getChessPieces()[x][y] = this;
             location.x = x;
             location.y = y;
