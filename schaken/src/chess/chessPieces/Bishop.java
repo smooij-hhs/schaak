@@ -2,6 +2,7 @@ package chess.chessPieces;
 
 
 import chess.Board;
+import chess.swingUtils.SpriteSheet;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class Bishop extends ChessPiece {
     public Bishop(int x, int y, boolean isBlack, Board board) {
         super(x, y, isBlack, board);
+        sprite = SpriteSheet.grabImage(2, isBlack ? 1 : 0);
     }
 
     @Override

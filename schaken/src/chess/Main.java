@@ -1,6 +1,8 @@
 package chess;
 
 import chess.chessPieces.*;
+import chess.swingUtils.MainFrame;
+import chess.swingUtils.SpriteSheet;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,8 +15,15 @@ public class Main {
     private boolean running;
 
     private Main() {
+        SpriteSheet.loadSprites();
         board = new Board();
         chessPieces = board.getChessPieces();
+        new MainFrame(board);
+
+//        consoleHandleMethod();
+    }
+
+    private void consoleHandleMethod() {
         running = true;
         Scanner read = new Scanner(System.in);
 
@@ -72,30 +81,16 @@ public class Main {
                 }
             }
         }
-
-
     }
 
     private void drawConsole() {
-//        ArrayList<Point> posMoves = chessPieces[1][0].getPossibleMoves();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                boolean posMove = false;
-
-//                for (Point p : posMoves) {
-//                    if (p.x == x && p.y == y) {
-//                        System.out.print("KnG ");
-//                        posMove = true;
-//                    }
-//                }
-
-                if (!posMove) {
-                    if (chessPieces[x][y] != null) {
-                        ChessPiece temp = chessPieces[x][y];
-                        System.out.print(getChessPieceString(temp) + " ");
-                    } else
-                        System.out.print("o   ");
-                }
+                if (chessPieces[x][y] != null) {
+                    ChessPiece temp = chessPieces[x][y];
+                    System.out.print(getChessPieceString(temp) + " ");
+                } else
+                    System.out.print("o   ");
             }
             System.out.println();
             System.out.println();

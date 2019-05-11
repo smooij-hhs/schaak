@@ -3,6 +3,7 @@ package chess.chessPieces;
 import chess.Board;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class ChessPiece {
@@ -10,6 +11,7 @@ public abstract class ChessPiece {
     protected Point location;
     protected boolean isBlack;
     protected Board board;
+    protected BufferedImage sprite;
 
     public ChessPiece(int x, int y, boolean isBlack, Board board) {
         location = new Point(x, y);
@@ -21,6 +23,15 @@ public abstract class ChessPiece {
 
     public abstract ArrayList<Point> getPossibleMoves();
 
+    public void draw(Graphics g) {
+
+        int offset = 16;
+        int gs = Board.GRID_SIZE;
+        int xReal = location.x * gs + offset;
+        int yReal = location.y * gs + offset;
+        g.drawImage(sprite, xReal, yReal, 32, 32, null);
+    }
+
     public boolean move(int x, int y) {
         if (getPossibleMoves().contains(new Point(x, y))) {
             board.getChessPieces()[location.x][location.y] = null;
@@ -29,6 +40,7 @@ public abstract class ChessPiece {
             board.getChessPieces()[x][y] = this;
             location.x = x;
             location.y = y;
+            board.setWhiteTurn(!board.isWhiteTurn());
             return true;
         }
         return false;
@@ -40,7 +52,7 @@ public abstract class ChessPiece {
 
     protected void calcDiagonalLine(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir, y = location.y + yDir;
-        int boardSize = Board.SIZE;
+        int boardSize = Board.BOARD_SIZE;
 
         while (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             Point newPoint = new Point(x, y);
@@ -60,7 +72,7 @@ public abstract class ChessPiece {
 
     protected void calcStraightLine(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir, y = location.y + yDir;
-        int boardSize = Board.SIZE;
+        int boardSize = Board.BOARD_SIZE;
 
         while (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             Point newPoint = new Point(x, y);
@@ -83,7 +95,7 @@ public abstract class ChessPiece {
     protected void calcSingleStepCapture(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir;
         int y = location.y + yDir;
-        int boardSize = Board.SIZE;
+        int boardSize = Board.BOARD_SIZE;
 
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             if (cp[x][y] == null)
