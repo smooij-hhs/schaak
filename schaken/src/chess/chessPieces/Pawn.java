@@ -58,8 +58,7 @@ public class Pawn extends ChessPiece {
     private void calcDiagonal(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int y) {
         int x = location.x + xDir;
         if (x >= 0 && x < Board.BOARD_SIZE && y >= 0 && y < Board.BOARD_SIZE && cp[x][y] != null) {
-            ChessPiece temp = cp[x][y];
-            if (temp.isBlack && !isBlack || (!temp.isBlack && isBlack)) {
+            if (pieceIsDifferentColor(cp[x][y])) {
                 res.add(new Point(x, y));
             }
         }

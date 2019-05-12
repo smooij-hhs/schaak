@@ -58,8 +58,7 @@ public abstract class ChessPiece {
             Point newPoint = new Point(x, y);
 
             if (cp[x][y] != null) {
-                ChessPiece temp = cp[x][y];
-                if ((temp.isBlack && !isBlack) || (!temp.isBlack && isBlack))
+                if (pieceIsDifferentColor(cp[x][y]))
                     res.add(newPoint);
                 break;
             }
@@ -78,8 +77,7 @@ public abstract class ChessPiece {
             Point newPoint = new Point(x, y);
 
             if (cp[x][y] != null) {
-                ChessPiece temp = cp[x][y];
-                if ((temp.isBlack && !isBlack) || (!temp.isBlack && isBlack))
+                if (pieceIsDifferentColor(cp[x][y]))
                     res.add(newPoint);
                 break;
             }
@@ -100,8 +98,12 @@ public abstract class ChessPiece {
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             if (cp[x][y] == null)
                 res.add(new Point(x, y));
-            else if (cp[x][y].isBlack && !isBlack || !cp[x][y].isBlack && isBlack)
+            else if (pieceIsDifferentColor(cp[x][y]))
                 res.add(new Point(x, y));
         }
+    }
+
+    public boolean pieceIsDifferentColor(ChessPiece piece) {
+        return (piece.isBlack && !isBlack) || (!piece.isBlack && isBlack);
     }
 }
