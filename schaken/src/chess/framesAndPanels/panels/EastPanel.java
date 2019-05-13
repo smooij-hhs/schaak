@@ -18,6 +18,11 @@ public class EastPanel extends JPanel {
         init();
     }
 
+    public void setAmountOfMoves(int amountOfMoves) {
+        this.amountOfMoves = amountOfMoves;
+        setMovesText(amountOfMoves);
+    }
+
     private void init() {
         setPreferredSize(new Dimension(MainFrame.WIDTH_OFFSET, 10));
         setBackground(Color.BLACK);
@@ -25,7 +30,8 @@ public class EastPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
 
-        movesText = new JLabel("moves: " + amountOfMoves);
+        movesText = new JLabel();
+        setAmountOfMoves(amountOfMoves);
         movesText.setForeground(Color.WHITE);
 
         GUIButton resetButton = new GUIButton("Reset");
@@ -48,7 +54,11 @@ public class EastPanel extends JPanel {
 
     public void addMove() {
         amountOfMoves++;
-        movesText.setText("moves: " + amountOfMoves);
+        setMovesText(amountOfMoves);
+    }
+
+    private void setMovesText(int aom) {
+        movesText.setText("Moves: " + aom);
     }
 
 }

@@ -18,6 +18,7 @@ public abstract class ChessPiece {
     protected boolean isBlack;
     protected Board board;
     protected BufferedImage sprite;
+    protected boolean hasMoved;
 
     public ChessPiece(int x, int y, boolean isBlack, Board board) {
         location = new Point(x, y);
@@ -50,7 +51,7 @@ public abstract class ChessPiece {
         for (Point p : posMoves) {
             ChessPiece[][] cp = trueCopyDoubleArray(board.getChessPieces());
             moveTheoretical(cp, p.x, p.y);
-            if (king.getCheckForCheck(cp, king.location.x, king.location.y)) {
+            if (king.getCheckForCheck(null, cp, king.location.x, king.location.y)) {
                 res.add(p);
             }
         }
@@ -96,6 +97,7 @@ public abstract class ChessPiece {
         checkIfMakeCheck();
         solveCheck();
         EAST_PANEL.addMove();
+        if (!hasMoved) hasMoved = true;
     }
 
     public void moveTheoretical(ChessPiece[][] cp, int x, int y) {

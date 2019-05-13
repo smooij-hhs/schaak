@@ -140,6 +140,10 @@ public class Board extends JComponent {
         makeBoard();
         mouseInput.setPawnIsChanging(false);
         mouseInput.resetSelectedPiece();
+        whiteCheck = false;
+        blackCheck = false;
+        ChessPiece.NORTH_PANEL.setCheckText("");
+        ChessPiece.EAST_PANEL.setAmountOfMoves(0);
         draw();
     }
 

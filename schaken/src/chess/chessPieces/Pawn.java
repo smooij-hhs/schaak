@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class Pawn extends ChessPiece {
 
-    private boolean hasMoved = false;
-
     public Pawn(int x, int y, boolean isBlack, Board board) {
         super(x, y, isBlack, board);
         sprite = SpriteSheet.grabImage(5, isBlack ? 1 : 0);
@@ -43,7 +41,6 @@ public class Pawn extends ChessPiece {
     public boolean move(int x, int y) {
         if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
             movePiece(x, y);
-            if (!hasMoved) hasMoved = true;
             if (y == 0 || y == Board.BOARD_SIZE - 1) {
                 board.changePawnMechanics(this);
             }
