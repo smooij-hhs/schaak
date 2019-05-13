@@ -1,4 +1,4 @@
-package chess.swingUtils;
+package chess;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ public class SpriteSheet {
 
 
     public static void loadSprites() {
-        try {;
+        try {
             chessSpriteSheet = ImageIO.read(new FileInputStream("res/spritesPieces.png"));
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,11 +1,8 @@
 package chess;
 
 import chess.chessPieces.*;
-import chess.swingUtils.MainFrame;
-import chess.swingUtils.SpriteSheet;
+import chess.framesAndPanels.MainFrame;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -28,7 +25,7 @@ public class Main {
         Scanner read = new Scanner(System.in);
 
         while (running) {
-            drawConsole();
+            drawConsole(board.getChessPieces());
             System.out.println();
             System.out.println("Select coords of piece (x,y):");
             String input = read.nextLine();
@@ -83,11 +80,11 @@ public class Main {
         }
     }
 
-    private void drawConsole() {
+    public static void drawConsole(ChessPiece[][] cp) {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                if (chessPieces[x][y] != null) {
-                    ChessPiece temp = chessPieces[x][y];
+                if (cp[x][y] != null) {
+                    ChessPiece temp = cp[x][y];
                     System.out.print(getChessPieceString(temp) + " ");
                 } else
                     System.out.print("o   ");
@@ -97,7 +94,7 @@ public class Main {
         }
     }
 
-    private String getChessPieceString(ChessPiece chessPiece) {
+    private static String getChessPieceString(ChessPiece chessPiece) {
         if (chessPiece.isBlack()) {
             if (chessPiece instanceof Pawn)
                 return "PaB";

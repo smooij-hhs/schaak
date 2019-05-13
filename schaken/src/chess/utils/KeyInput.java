@@ -1,4 +1,6 @@
-package chess.swingUtils;
+package chess.utils;
+
+import chess.framesAndPanels.MainFrame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,6 +21,7 @@ public class KeyInput implements KeyListener {
             case VK_ESCAPE:
                 System.exit(0);
         }
+
     }
 
     @Override

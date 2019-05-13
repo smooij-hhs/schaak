@@ -1,7 +1,8 @@
 package chess.chessPieces;
 
 import chess.Board;
-import chess.swingUtils.SpriteSheet;
+import chess.SpriteSheet;
+import chess.utils.MouseInput;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -40,18 +41,21 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean move(int x, int y) {
-        if (getPossibleMoves().contains(new Point(x, y))) {
-            board.getChessPieces()[location.x][location.y] = null;
-            if (board.getChessPieces()[x][y] instanceof King)
-                board.setGameWon(true);
-            board.getChessPieces()[x][y] = this;
-            location.x = x;
-            location.y = y;
-            board.setWhiteTurn(!board.isWhiteTurn());
+        if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
+            movePiece(x, y);
             if (!hasMoved) hasMoved = true;
+            if (y == 0 || y == Board.BOARD_SIZE - 1) {
+                board.changePawnMechanics(this);
+            }
             return true;
         }
         return false;
+    }
+
+    public void changeToDifferentPiece(ChessPiece newChessPiece) {
+        Point p = newChessPiece.location;
+        board.getChessPieces()[p.x][p.y] = newChessPiece;
+        newChessPiece.checkIfMakeCheck();
     }
 
 

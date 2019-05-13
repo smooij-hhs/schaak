@@ -1,7 +1,7 @@
 package chess.chessPieces;
 
 import chess.Board;
-import chess.swingUtils.SpriteSheet;
+import chess.SpriteSheet;
 
 import java.awt.*;
 import java.util.ArrayList;

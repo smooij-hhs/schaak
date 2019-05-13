@@ -1,7 +1,7 @@
 package chess.chessPieces;
 
 import chess.Board;
-import chess.swingUtils.SpriteSheet;
+import chess.SpriteSheet;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class King extends ChessPiece {
 
     private void checkForCheck(ArrayList<Point> res, ChessPiece[][] cp, int x, int y) {
         contCheckCheckMate = true;
-        checkKnightCheck(cp, x - 2, y - 1);
+                                checkKnightCheck(cp, x - 2, y - 1);
         if (contCheckCheckMate) checkKnightCheck(cp, x - 2, y + 1);
         if (contCheckCheckMate) checkKnightCheck(cp, x - 1, y - 2);
         if (contCheckCheckMate) checkKnightCheck(cp, x - 1, y + 2);
@@ -67,6 +67,28 @@ public class King extends ChessPiece {
 
 
         if (contCheckCheckMate) res.add(new Point(x, y));
+    }
+
+    protected boolean getCheckForCheck(ChessPiece[][] cp, int x, int y) {
+        contCheckCheckMate = true;
+
+                                checkKnightCheck(cp, x - 2, y - 1);
+        if (contCheckCheckMate) checkKnightCheck(cp, x - 2, y + 1);
+        if (contCheckCheckMate) checkKnightCheck(cp, x - 1, y - 2);
+        if (contCheckCheckMate) checkKnightCheck(cp, x - 1, y + 2);
+        if (contCheckCheckMate) checkKnightCheck(cp, x + 1, y - 2);
+        if (contCheckCheckMate) checkKnightCheck(cp, x + 1, y + 2);
+        if (contCheckCheckMate) checkKnightCheck(cp, x + 2, y - 1);
+        if (contCheckCheckMate) checkKnightCheck(cp, x + 2, y + 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x - 1, y - 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x - 1, y + 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x + 1, y - 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x + 1, y + 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x, y + 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x, y - 1);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x + 1, y);
+        if (contCheckCheckMate) checkStraightLineCheck(cp, x, y, x - 1, y);
+        return contCheckCheckMate;
     }
 
     private void checkStraightLineCheck(ChessPiece[][] cp, int xo, int yo, int xn, int yn) {
