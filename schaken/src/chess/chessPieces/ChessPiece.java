@@ -51,9 +51,8 @@ public abstract class ChessPiece {
         for (Point p : posMoves) {
             ChessPiece[][] cp = trueCopyDoubleArray(board.getChessPieces());
             moveTheoretical(cp, p.x, p.y);
-            if (king.getCheckForCheck(cp, king.location.x, king.location.y)) {
+            if (king.getCheckForCheck(cp, king.location.x, king.location.y))
                 res.add(p);
-            }
         }
     }
 
@@ -100,11 +99,7 @@ public abstract class ChessPiece {
 
     public void moveTheoretical(ChessPiece[][] cp, int x, int y) {
         cp[location.x][location.y] = null;
-        try {
-            cp[x][y] = this;
-        } catch (Exception e) {
-            System.out.println(x + " - " + y);
-        }
+        cp[x][y] = this;
     }
 
     protected void checkIfMakeCheck() {
