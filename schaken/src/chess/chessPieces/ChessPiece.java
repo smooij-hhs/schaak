@@ -51,7 +51,7 @@ public abstract class ChessPiece {
         for (Point p : posMoves) {
             ChessPiece[][] cp = trueCopyDoubleArray(board.getChessPieces());
             moveTheoretical(cp, p.x, p.y);
-            if (king.getCheckForCheck(null, cp, king.location.x, king.location.y)) {
+            if (king.getCheckForCheck(cp, king.location.x, king.location.y)) {
                 res.add(p);
             }
         }
@@ -88,8 +88,7 @@ public abstract class ChessPiece {
     protected void movePiece(int x, int y) {
         ChessPiece[][] cp = board.getChessPieces();
         cp[location.x][location.y] = null;
-        if (cp[x][y] instanceof King)
-            board.setGameWon(true);
+        if (!hasMoved) hasMoved = true;
         cp[x][y] = this;
         location.x = x;
         location.y = y;
@@ -97,12 +96,15 @@ public abstract class ChessPiece {
         checkIfMakeCheck();
         solveCheck();
         EAST_PANEL.addMove();
-        if (!hasMoved) hasMoved = true;
     }
 
     public void moveTheoretical(ChessPiece[][] cp, int x, int y) {
         cp[location.x][location.y] = null;
-        cp[x][y] = this;
+        try {
+            cp[x][y] = this;
+        } catch (Exception e) {
+            System.out.println(x + " - " + y);
+        }
     }
 
     protected void checkIfMakeCheck() {
@@ -137,10 +139,6 @@ public abstract class ChessPiece {
         }
 
         NORTH_PANEL.setCheckText("check mate");
-    }
-
-    private void checkIfRemise() {
-
     }
 
     protected void solveCheck() {
@@ -210,7 +208,7 @@ public abstract class ChessPiece {
         }
     }
 
-    public boolean pieceIsDifferentColor(ChessPiece piece) {
+    protected boolean pieceIsDifferentColor(ChessPiece piece) {
         return (piece.isBlack && !isBlack) || (!piece.isBlack && isBlack);
     }
 }

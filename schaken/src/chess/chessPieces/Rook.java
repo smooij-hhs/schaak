@@ -25,6 +25,15 @@ public class Rook extends ChessPiece {
         return res;
     }
 
+    protected void moveRookCastling(int x, int y) {
+        ChessPiece[][] cp = board.getChessPieces();
+        cp[location.x][location.y] = null;
+        hasMoved = true;
+        cp[x][y] = this;
+        location.x = x;
+        location.y = y;
+    }
+
 
 
 }

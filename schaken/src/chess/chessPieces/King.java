@@ -14,6 +14,23 @@ public class King extends ChessPiece {
     }
 
     @Override
+    public boolean move(int x, int y) {
+        if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
+            int xDiff = location.x - x;
+            if (Math.abs(xDiff) == 2) {
+                boolean isZeroRook = xDiff > 0;
+                int xRook = isZeroRook ? 0 : 7;
+                int newXRook = isZeroRook ? location.x - 1 : location.x + 1;
+                Rook rook = (Rook) board.getChessPieces()[xRook][y];
+                rook.moveRookCastling(newXRook, y);
+            }
+            movePiece(x, y);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public ArrayList<Point> getPossibleMoves() {
         ChessPiece[][] cp = board.getChessPieces();
         ArrayList<Point> res = new ArrayList<>();
@@ -27,6 +44,8 @@ public class King extends ChessPiece {
         calcSingleStepCapture(res, cp, 1, 0);
         calcSingleStepCapture(res, cp, 1, 1);
 
+        calcCastling(res, cp);
+
         return res;
     }
 
@@ -37,15 +56,48 @@ public class King extends ChessPiece {
         int boardSize = Board.BOARD_SIZE;
 
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
-            if (cp[x][y] == null)
-                getCheckForCheck(res, cp, x, y);
-            else if (pieceIsDifferentColor(cp[x][y]))
-                getCheckForCheck(res, cp, x, y);
+            if (cp[x][y] == null && getCheckForCheck(cp, x, y))
+                res.add(new Point(x, y));
+            else if (cp[x][y] != null && pieceIsDifferentColor(cp[x][y]))
+                res.add(new Point(x, y));
         }
     }
 
-    protected boolean getCheckForCheck(ArrayList<Point> res, ChessPiece[][] cp, int x, int y) {
-        boolean makesCheck = checkKnightCheck(cp, x - 2, y - 1) &&
+    private void calcCastling(ArrayList<Point> res, ChessPiece[][] cp) {
+        int y = location.y;
+        if (!hasMoved && getCheckForCheck(cp, location.x, y)) {
+            ChessPiece zeroRook = cp[0][y];
+            ChessPiece sevenRook = cp[7][y];
+            if (checkIfCanCastleForRook(cp, zeroRook, y, true))
+                res.add(new Point(location.x - 2, y));
+            if (checkIfCanCastleForRook(cp, sevenRook, y, false))
+                res.add(new Point(location.x + 2, y));
+        }
+
+    }
+
+    private boolean checkIfCanCastleForRook(ChessPiece[][] cp, ChessPiece rook, int y, boolean isZeroRook) {
+        if (rook instanceof Rook && !rook.hasMoved) {
+            int x = isZeroRook ? 1 : 6;
+
+            while (x != location.x) {
+                if (cp[x][y] != null)
+                    return false;
+                if (((isZeroRook && x >= location.x - 2) ||
+                        (!isZeroRook && x <= location.x + 2)) &&
+                        !getCheckForCheck(cp, x, y))
+                    return false;
+                x += isZeroRook ? 1 : -1;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected boolean getCheckForCheck(ChessPiece[][] cp, int x, int y) {
+        return checkKnightCheck(cp, x - 2, y - 1) &&
                              checkKnightCheck(cp, x - 2, y + 1) &&
                              checkKnightCheck(cp, x - 1, y - 2) &&
                              checkKnightCheck(cp, x - 1, y + 2) &&
@@ -61,29 +113,7 @@ public class King extends ChessPiece {
                              checkStraightLineCheck(cp, x, y,         x, y - 1) &&
                              checkStraightLineCheck(cp, x, y, x + 1,         y) &&
                              checkStraightLineCheck(cp, x, y, x - 1,         y);
-
-        if (makesCheck && res != null) res.add(new Point(x, y));
-        return makesCheck;
     }
-//
-//    protected boolean getCheckForCheck(ChessPiece[][] cp, int x, int y) {
-//        return  checkKnightCheck(cp, x - 2, y - 1) &&
-//                checkKnightCheck(cp, x - 2, y + 1) &&
-//                checkKnightCheck(cp, x - 1, y - 2) &&
-//                checkKnightCheck(cp, x - 1, y + 2) &&
-//                checkKnightCheck(cp, x + 1, y - 2) &&
-//                checkKnightCheck(cp, x + 1, y + 2) &&
-//                checkKnightCheck(cp, x + 2, y - 1) &&
-//                checkKnightCheck(cp, x + 2, y + 1) &&
-//                checkStraightLineCheck(cp, x, y, x - 1, y - 1) &&
-//                checkStraightLineCheck(cp, x, y, x - 1, y + 1) &&
-//                checkStraightLineCheck(cp, x, y, x + 1, y - 1) &&
-//                checkStraightLineCheck(cp, x, y, x + 1, y + 1) &&
-//                checkStraightLineCheck(cp, x, y,         x, y + 1) &&
-//                checkStraightLineCheck(cp, x, y,         x, y - 1) &&
-//                checkStraightLineCheck(cp, x, y, x + 1,         y) &&
-//                checkStraightLineCheck(cp, x, y, x - 1,         y);
-//    }
 
     private boolean checkStraightLineCheck(ChessPiece[][] cp, int xo, int yo, int xn, int yn) {
         int xDir, yDir;
@@ -126,7 +156,6 @@ public class King extends ChessPiece {
                 return false;
             }
         }
-           
         return true;
     }
     
