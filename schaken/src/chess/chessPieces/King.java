@@ -58,7 +58,7 @@ public class King extends ChessPiece {
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             if (cp[x][y] == null && getCheckForCheck(cp, x, y))
                 res.add(new Point(x, y));
-            else if (cp[x][y] != null && pieceIsDifferentColor(cp[x][y]))
+            else if (cp[x][y] != null && pieceIsDifferentColor(cp[x][y]) && getCheckForCheck(cp, x, y))
                 res.add(new Point(x, y));
         }
     }
