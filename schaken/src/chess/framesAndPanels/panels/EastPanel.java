@@ -23,6 +23,10 @@ public class EastPanel extends JPanel {
         setMovesText(amountOfMoves);
     }
 
+    public int getAmountOfMoves() {
+        return amountOfMoves;
+    }
+
     private void init() {
         setPreferredSize(new Dimension(MainFrame.WIDTH_OFFSET, 10));
         setBackground(Color.BLACK);

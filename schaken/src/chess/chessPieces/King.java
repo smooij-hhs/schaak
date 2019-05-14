@@ -98,21 +98,21 @@ public class King extends ChessPiece {
 
     protected boolean getCheckForCheck(ChessPiece[][] cp, int x, int y) {
         return checkKnightCheck(cp, x - 2, y - 1) &&
-                             checkKnightCheck(cp, x - 2, y + 1) &&
-                             checkKnightCheck(cp, x - 1, y - 2) &&
-                             checkKnightCheck(cp, x - 1, y + 2) &&
-                             checkKnightCheck(cp, x + 1, y - 2) &&
-                             checkKnightCheck(cp, x + 1, y + 2) &&
-                             checkKnightCheck(cp, x + 2, y - 1) &&
-                             checkKnightCheck(cp, x + 2, y + 1) &&
-                             checkStraightLineCheck(cp, x, y, x - 1, y - 1) &&
-                             checkStraightLineCheck(cp, x, y, x - 1, y + 1) &&
-                             checkStraightLineCheck(cp, x, y, x + 1, y - 1) &&
-                             checkStraightLineCheck(cp, x, y, x + 1, y + 1) &&
-                             checkStraightLineCheck(cp, x, y,         x, y + 1) &&
-                             checkStraightLineCheck(cp, x, y,         x, y - 1) &&
-                             checkStraightLineCheck(cp, x, y, x + 1,         y) &&
-                             checkStraightLineCheck(cp, x, y, x - 1,         y);
+                checkKnightCheck(cp, x - 2, y + 1) &&
+                checkKnightCheck(cp, x - 1, y - 2) &&
+                checkKnightCheck(cp, x - 1, y + 2) &&
+                checkKnightCheck(cp, x + 1, y - 2) &&
+                checkKnightCheck(cp, x + 1, y + 2) &&
+                checkKnightCheck(cp, x + 2, y - 1) &&
+                checkKnightCheck(cp, x + 2, y + 1) &&
+                checkStraightLineCheck(cp, x, y, x - 1, y - 1) &&
+                checkStraightLineCheck(cp, x, y, x - 1, y + 1) &&
+                checkStraightLineCheck(cp, x, y, x + 1, y - 1) &&
+                checkStraightLineCheck(cp, x, y, x + 1, y + 1) &&
+                checkStraightLineCheck(cp, x, y, x, y + 1) &&
+                checkStraightLineCheck(cp, x, y, x, y - 1) &&
+                checkStraightLineCheck(cp, x, y, x + 1, y) &&
+                checkStraightLineCheck(cp, x, y, x - 1, y);
     }
 
     private boolean checkStraightLineCheck(ChessPiece[][] cp, int xo, int yo, int xn, int yn) {
@@ -145,7 +145,8 @@ public class King extends ChessPiece {
                 return true;
         }
 
-        if (xn > 0 && xn < Board.BOARD_SIZE - 1 && yn > 0 && yn < Board.BOARD_SIZE - 1)
+        if ((diagonal && xn > 0 && xn < Board.BOARD_SIZE - 1 && yn > 0 && yn < Board.BOARD_SIZE - 1) ||
+                (xDir == 0 && yn > 0 && yn < Board.BOARD_SIZE - 1) || (yDir == 0 && xn > 0 && xn < Board.BOARD_SIZE - 1))
             return checkStraightLineCheck(cp, xo, yo, xn + xDir, yn + yDir);
         return true;
     }

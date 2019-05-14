@@ -2,7 +2,6 @@ package chess.chessPieces;
 
 import chess.Board;
 import chess.SpriteSheet;
-import chess.utils.MouseInput;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,16 +33,40 @@ public class Pawn extends ChessPiece {
         calcDiagonal(res, cp, -1, y1);
         calcDiagonal(res, cp, 1, y1);
 
+        if (isBlack) calcEnPassant(res, -1);
+        else calcEnPassant(res, 1);
+
         return res;
+    }
+
+    private void calcEnPassant(ArrayList<Point> res, int yDir) {
+        int[] temp = board.getPawnMovedEnPassantAtMove();
+        if (temp[0] == EAST_PANEL.getAmountOfMoves() - 1) {
+            if (location.equals(new Point(temp[1] - 1, temp[2] + yDir * 2)) ||
+                    location.equals(new Point(temp[1] + 1, temp[2] + yDir * 2)))
+                res.add(new Point(temp[1], temp[2] + yDir));
+        }
     }
 
     @Override
     public boolean move(int x, int y) {
         if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
-            movePiece(x, y);
-            if (y == 0 || y == Board.BOARD_SIZE - 1) {
-                board.changePawnMechanics(this);
+            if (Math.abs(y - location.y) == 2) {
+                int[] temp = new int[]{EAST_PANEL.getAmountOfMoves(), location.x, location.y};
+                board.setPawnMovedEnPassantAtMove(temp);
             }
+
+            ChessPiece[][] cp = board.getChessPieces();
+            if (x != location.x && cp[x][y] == null) {
+                int yEnPassantPawn = y + (isBlack ? -1 : 1);
+                cp[x][yEnPassantPawn] = null;
+            }
+
+
+            movePiece(x, y);
+
+            if (y == 0 || y == Board.BOARD_SIZE - 1)
+                board.changePawnMechanics(this);
             return true;
         }
         return false;

@@ -15,12 +15,16 @@ public class Board extends JComponent {
     private ChessPiece[][] chessPieces;
     private boolean gameWon;
     private boolean whiteTurn;
+    private ArrayList<Point> posMoves = new ArrayList<>();
+    private MouseInput mouseInput;
+
     private boolean whiteCheck;
     private boolean blackCheck;
     private King whiteKing;
     private King blackKing;
-    ArrayList<Point> posMoves = new ArrayList<>();
-    private MouseInput mouseInput;
+
+    // index 0 = at move; index 1 = x; index 2 = y;
+    private int[] pawnMovedEnPassantAtMove = new int[3];
 
     private BufferedImage[] blackSprites = new BufferedImage[4];
     private BufferedImage[] whiteSprites = new BufferedImage[4];
@@ -55,15 +59,6 @@ public class Board extends JComponent {
         new Knight(6,0,true, this);
         new Rook(7,0,true, this);
 
-        new Pawn(0,1,true, this);
-        new Pawn(1,1,true, this);
-        new Pawn(2,1,true, this);
-        new Pawn(3,1,true, this);
-        new Pawn(4,1,true, this);
-        new Pawn(5,1,true, this);
-        new Pawn(6, 1,true, this);
-        new Pawn(7,1,true, this);
-
         // white pieces
         new Rook(0,7,false, this);
         new Knight(1,7,false, this);
@@ -73,15 +68,16 @@ public class Board extends JComponent {
         new Bishop(5, 7,false, this);
         new Knight(6,7,false, this);
         new Rook(7,7,false, this);
-//
-        new Pawn(0,6,false, this);
-        new Pawn(1,6,false, this);
-        new Pawn(2,6,false, this);
-        new Pawn(3,6,false, this);
-        new Pawn(4,6,false, this);
-        new Pawn(5,6,false, this);
-        new Pawn(6,6,false, this);
-        new Pawn(7,6,false, this);
+
+        // add pawns
+        for (int i = 0; i < 8; i++) {
+            new Pawn(i, 1, true, this);
+            new Pawn(i, 6, false, this);
+        }
+//        new Pawn(3,0,true,this);
+
+//        new Bishop(4, 4, true, this);
+//        new Queen(4, 5, false, this);
     }
 
     public ChessPiece[][] getChessPieces() {
@@ -134,6 +130,14 @@ public class Board extends JComponent {
 
     public void setContainsMouse(boolean[] containsMouse) {
         this.containsMouse = containsMouse;
+    }
+
+    public void setPawnMovedEnPassantAtMove(int[] pawnMovedEnPassantAtMove) {
+        this.pawnMovedEnPassantAtMove = pawnMovedEnPassantAtMove;
+    }
+
+    public int[] getPawnMovedEnPassantAtMove() {
+        return pawnMovedEnPassantAtMove;
     }
 
     public void reset() {

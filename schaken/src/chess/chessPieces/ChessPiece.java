@@ -1,6 +1,7 @@
 package chess.chessPieces;
 
 import chess.Board;
+import chess.Main;
 import chess.framesAndPanels.panels.EastPanel;
 import chess.framesAndPanels.panels.NorthPanel;
 
@@ -47,7 +48,7 @@ public abstract class ChessPiece {
     }
 
     private void checkIfMoveMakesCheckOwnColour(ArrayList<Point> res, ArrayList<Point> posMoves) {
-        King king = (isBlack) ? board.getBlackKing() : board.getWhiteKing();
+        King king = isBlack ? board.getBlackKing() : board.getWhiteKing();
         for (Point p : posMoves) {
             ChessPiece[][] cp = trueCopyDoubleArray(board.getChessPieces());
             moveTheoretical(cp, p.x, p.y);
@@ -56,7 +57,7 @@ public abstract class ChessPiece {
         }
     }
 
-    private ChessPiece[][] trueCopyDoubleArray(ChessPiece[][] cp) {
+    protected ChessPiece[][] trueCopyDoubleArray(ChessPiece[][] cp) {
         int cpSize = cp.length;
         ChessPiece[][] res = new ChessPiece[cpSize][];
         for (int i = 0; i < cpSize; i++) {

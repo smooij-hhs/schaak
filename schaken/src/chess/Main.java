@@ -20,7 +20,7 @@ public class Main {
 //        consoleHandleMethod();
     }
 
-    private void consoleHandleMethod() {
+    public void consoleHandleMethod() {
         running = true;
         Scanner read = new Scanner(System.in);
 
