@@ -1,5 +1,6 @@
 package chess;
 
+import chess.ai.Computer;
 import chess.chessPieces.*;
 import chess.utils.MouseInput;
 
@@ -34,12 +35,18 @@ public class Board extends JComponent {
     private boolean[] containsMouse = new boolean[4];
     private Rectangle[] hitBoxesPawnToChange;
 
+    private Computer whiteComp;
+    private Computer blackComp;
+
     public Board() {
         makeBoard();
         for (int i = 0; i < 4; i++) {
             whiteSprites[i] = SpriteSheet.grabImage(i + 1, 0);
             blackSprites[i] = SpriteSheet.grabImage(i + 1, 1);
         }
+
+//        whiteComp = new Computer(this, false);
+        blackComp = new Computer(this, true);
     }
 
     private void makeBoard() {
@@ -74,10 +81,6 @@ public class Board extends JComponent {
             new Pawn(i, 1, true, this);
             new Pawn(i, 6, false, this);
         }
-//        new Pawn(3,0,true,this);
-
-//        new Bishop(4, 4, true, this);
-//        new Queen(4, 5, false, this);
     }
 
     public ChessPiece[][] getChessPieces() {
@@ -90,14 +93,6 @@ public class Board extends JComponent {
 
     public void setWhiteTurn(boolean whiteTurn) {
         this.whiteTurn = whiteTurn;
-    }
-
-    public void setGameWon(boolean gameWon) {
-        this.gameWon = gameWon;
-    }
-
-    public boolean isGameWon() {
-        return gameWon;
     }
 
     public void setWhiteCheck(boolean whiteCheck) {
@@ -136,6 +131,22 @@ public class Board extends JComponent {
         this.pawnMovedEnPassantAtMove = pawnMovedEnPassantAtMove;
     }
 
+    public Computer getWhiteComp() {
+        return whiteComp;
+    }
+
+    public void setWhiteComp(Computer whiteComp) {
+        this.whiteComp = whiteComp;
+    }
+
+    public Computer getBlackComp() {
+        return blackComp;
+    }
+
+    public void setBlackComp(Computer blackComp) {
+        this.blackComp = blackComp;
+    }
+
     public int[] getPawnMovedEnPassantAtMove() {
         return pawnMovedEnPassantAtMove;
     }
@@ -148,6 +159,12 @@ public class Board extends JComponent {
         blackCheck = false;
         ChessPiece.NORTH_PANEL.setCheckText("");
         ChessPiece.EAST_PANEL.setAmountOfMoves(0);
+        if (blackComp != null) blackComp.reset();
+        if (whiteComp != null) {
+            whiteComp.reset();
+            whiteComp.move();
+        }
+
         draw();
     }
 

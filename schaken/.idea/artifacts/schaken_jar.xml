@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="schaken:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/schaken_jar</output-path>
+    <root id="archive" name="schaken.jar">
+      <element id="module-output" name="schaken" />
+    </root>
+  </artifact>
+</component>

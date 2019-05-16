@@ -1,6 +1,8 @@
 package chess.utils;
 
 import chess.Board;
+import chess.MoveHandler;
+import chess.ai.Computer;
 import chess.chessPieces.*;
 
 import java.awt.*;
@@ -11,17 +13,27 @@ import java.util.ArrayList;
 
 public class MouseInput implements MouseListener, MouseMotionListener {
 
-    private boolean pawnIsChanging = false;
+    public static boolean isPlayerTurn;
 
+    private boolean pawnIsChanging = false;
     private Board board;
     private ChessPiece selectedPiece;
     private ArrayList<Point> posMoves;
     private Rectangle[] hitBoxesPawnToChange;
     private boolean[] containsMouse = new boolean[4];
     private Pawn pawnToChange;
+    private boolean whiteIsComp;
+    private boolean blackIsComp;
+
+    private Computer blackComp;
+
+
 
     public MouseInput(Board board) {
         this.board = board;
+        whiteIsComp = board.getWhiteComp() != null;
+        blackIsComp = board.getBlackComp() != null;
+        blackComp = board.getBlackComp();
     }
 
     @Override
@@ -34,10 +46,16 @@ public class MouseInput implements MouseListener, MouseMotionListener {
         int x = e.getX() / Board.GRID_SIZE;
         int y = e.getY() / Board.GRID_SIZE;
 
-        if (!pawnIsChanging)
-            selectAndMovePiece(x, y, cp);
-        else
+
+        boolean isWhiteTurn = board.isWhiteTurn();
+
+        if (((isWhiteTurn && !whiteIsComp) || (!isWhiteTurn && !blackIsComp)) && !pawnIsChanging) {
+                selectAndMovePiece(x, y, cp);
+        }
+
+        if (pawnIsChanging)
             changePawn(e.getX(), e.getY());
+
     }
 
     public void setPawnIsChanging(boolean pawnIsChanging) {
@@ -79,6 +97,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                         break;
                 }
 
+                MoveHandler.checkIfCompMove(board);
                 pawnIsChanging = false;
                 board.draw();
             }
@@ -94,13 +113,18 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                     removePosMovesAndDrawBoard();
             }
 
-            else if (selectedPiece != null && selectedPiece.move(x, y))
+            else if (selectedPiece != null && selectedPiece.canMove(x, y)) {
+                selectedPiece.move(x, y);
+                if (!pawnIsChanging) MoveHandler.checkIfCompMove(board);
                 removePosMovesAndDrawBoard();
-            else
+            } else
                 removePosMovesAndDrawBoard();
 
-        } else if (selectedPiece != null && selectedPiece.move(x, y))
+        } else if (selectedPiece != null && selectedPiece.canMove(x, y)) {
+            selectedPiece.move(x, y);
+            if (!pawnIsChanging) MoveHandler.checkIfCompMove(board);
             removePosMovesAndDrawBoard();
+        }
         else
             removePosMovesAndDrawBoard();
     }

@@ -1,7 +1,6 @@
 package chess.chessPieces;
 
 import chess.Board;
-import chess.Main;
 import chess.framesAndPanels.panels.EastPanel;
 import chess.framesAndPanels.panels.NorthPanel;
 
@@ -11,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class ChessPiece {
+
+    public static int PAWN_POINTS   = 1,
+                      BISHOP_POINTS = 3,
+                      KNIGHT_POINTS = 3,
+                      ROOK_POINTS   = 5,
+                      QUEEN_POINTS  = 9;
 
     public static NorthPanel NORTH_PANEL;
     public static EastPanel EAST_PANEL;
@@ -57,16 +62,6 @@ public abstract class ChessPiece {
         }
     }
 
-    protected ChessPiece[][] trueCopyDoubleArray(ChessPiece[][] cp) {
-        int cpSize = cp.length;
-        ChessPiece[][] res = new ChessPiece[cpSize][];
-        for (int i = 0; i < cpSize; i++) {
-            res[i] = Arrays.copyOf(cp[i], cp[i].length);
-        }
-
-        return res;
-    }
-
     public abstract ArrayList<Point> getPossibleMoves();
 
     public void draw(Graphics g) {
@@ -78,11 +73,15 @@ public abstract class ChessPiece {
     }
 
     public boolean move(int x, int y) {
-        if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
+        if (canMove(x, y)) {
             movePiece(x, y);
             return true;
         }
         return false;
+    }
+
+    public boolean canMove(int x, int y) {
+        return getPossibleMovesWithCheckTest().contains(new Point(x, y));
     }
 
     protected void movePiece(int x, int y) {
@@ -92,10 +91,10 @@ public abstract class ChessPiece {
         cp[x][y] = this;
         location.x = x;
         location.y = y;
-        board.setWhiteTurn(!board.isWhiteTurn());
         checkIfMakeCheck();
         solveCheck();
         EAST_PANEL.addMove();
+        board.setWhiteTurn(!board.isWhiteTurn());
     }
 
     public void moveTheoretical(ChessPiece[][] cp, int x, int y) {
@@ -137,7 +136,7 @@ public abstract class ChessPiece {
         NORTH_PANEL.setCheckText("check mate");
     }
 
-    protected void solveCheck() {
+    protected void solveCheck() {;
         if (isBlack && board.isBlackCheck()) {
             board.setBlackCheck(false);
             NORTH_PANEL.setCheckText("");
@@ -206,5 +205,31 @@ public abstract class ChessPiece {
 
     protected boolean pieceIsDifferentColor(ChessPiece piece) {
         return (piece.isBlack && !isBlack) || (!piece.isBlack && isBlack);
+    }
+
+    public static ChessPiece[][] trueCopyDoubleArray(ChessPiece[][] cp) {
+        int cpSize = cp.length;
+        ChessPiece[][] res = new ChessPiece[cpSize][];
+        for (int i = 0; i < cpSize; i++) {
+            res[i] = Arrays.copyOf(cp[i], cp[i].length);
+        }
+
+        return res;
+    }
+
+
+    public static int getPointsChessPiece(ChessPiece chessPiece) {
+        if (chessPiece instanceof Pawn)
+            return PAWN_POINTS;
+        else if (chessPiece instanceof Bishop)
+            return BISHOP_POINTS;
+        else if (chessPiece instanceof Knight)
+            return KNIGHT_POINTS;
+        else if (chessPiece instanceof Rook)
+            return ROOK_POINTS;
+        else if (chessPiece instanceof Queen)
+            return QUEEN_POINTS;
+
+        return -1;
     }
 }

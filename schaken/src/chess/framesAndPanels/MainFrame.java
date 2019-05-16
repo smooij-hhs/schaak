@@ -1,6 +1,7 @@
 package chess.framesAndPanels;
 
 import chess.Board;
+import chess.MoveHandler;
 import chess.chessPieces.ChessPiece;
 import chess.utils.KeyInput;
 import chess.utils.MouseInput;

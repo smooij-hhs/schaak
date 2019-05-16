@@ -17,6 +17,8 @@ public class Main {
         chessPieces = board.getChessPieces();
         new MainFrame(board);
 
+//        board.getWhiteComp().move();
+
 //        consoleHandleMethod();
     }
 
@@ -63,20 +65,6 @@ public class Main {
 
             System.out.println();
             System.out.println();
-
-            if (board.isGameWon()) {
-                System.out.println("Game is won!\ntype 'r' to restart, or 'e' to exit");
-                input = read.nextLine().toLowerCase();
-                switch (input.charAt(0)) {
-                    case 'r':
-                        board.setGameWon(false);
-                        board.reset();
-                        chessPieces = board.getChessPieces();
-                        break;
-                    default:
-                        running = false;
-                }
-            }
         }
     }
 
@@ -92,6 +80,9 @@ public class Main {
             System.out.println();
             System.out.println();
         }
+
+        System.out.println();
+        System.out.println();
     }
 
     private static String getChessPieceString(ChessPiece chessPiece) {
