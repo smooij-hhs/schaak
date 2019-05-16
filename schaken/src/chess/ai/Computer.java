@@ -3,6 +3,7 @@ package chess.ai;
 import chess.Board;
 import chess.MoveHandler;
 import chess.chessPieces.ChessPiece;
+import chess.utils.MoveBind;
 import javafx.util.Pair;
 
 import java.awt.*;
@@ -48,15 +49,15 @@ public class Computer {
         ownPieces = getPiecesOneColor(isBlack);
         ChessPiece[][] cp = board.getChessPieces();
 
-        ArrayList<Pair<ChessPiece, Point>> cpCapture = new ArrayList<>();
+        ArrayList<Pair<ChessPiece, MoveBind>> cpCapture = new ArrayList<>();
         ArrayList<ChessPiece> cpNoCapture = new ArrayList<>();
 
         for (ChessPiece chessPiece : ownPieces) {
-            ArrayList<Point> points = chessPiece.getPossibleMovesWithCheckTest();
+            ArrayList<MoveBind> points = chessPiece.getPossibleMovesWithCheckTest();
             if (points.size() > 0) {
-                for (Point p: points) {
-                    if (cp[p.x][p.y] != null) {
-                        cpCapture.add(new Pair<>(chessPiece, p));
+                for (MoveBind mb: points) {
+                    if (mb.getPieceToCapture() != null) {
+                        cpCapture.add(new Pair<>(chessPiece, mb));
                         break;
                     } else if (cpCapture.size() == 0)
                         cpNoCapture.add(chessPiece);
@@ -66,19 +67,19 @@ public class Computer {
 
         if (cpCapture.size() > 0 || cpNoCapture.size() > 0) {
             ChessPiece randCP;
-            Point nextMove;
+            MoveBind nextMove;
             if (cpCapture.size() > 0) {
-                Pair<ChessPiece, Point> pair = cpCapture.get(0);
+                Pair<ChessPiece, MoveBind> pair = cpCapture.get(0);
                 randCP = pair.getKey();
                 nextMove = pair.getValue();
             } else {
                 int rand = r.nextInt(cpNoCapture.size());
                 randCP = cpNoCapture.get(rand);
-                ArrayList<Point> posMoves = randCP.getPossibleMoves();
+                ArrayList<MoveBind> posMoves = randCP.getPossibleMoves();
                 nextMove = posMoves.get(r.nextInt(posMoves.size()));
             }
 
-            randCP.move(nextMove.x, nextMove.y);
+            randCP.move(nextMove);
 
             board.draw();
             MoveHandler.checkIfCompMove(board);

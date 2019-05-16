@@ -18,7 +18,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
     private boolean pawnIsChanging = false;
     private Board board;
     private ChessPiece selectedPiece;
-    private ArrayList<Point> posMoves;
+    private ArrayList<MoveBind> posMoves;
     private Rectangle[] hitBoxesPawnToChange;
     private boolean[] containsMouse = new boolean[4];
     private Pawn pawnToChange;
@@ -105,33 +105,44 @@ public class MouseInput implements MouseListener, MouseMotionListener {
     }
 
     private void selectAndMovePiece(int x, int y, ChessPiece[][] cp) {
+
+        MoveBind nextMove = null;
+        if (selectedPiece != null) {
+            for (MoveBind mb : selectedPiece.getPossibleMovesWithCheckTest()) {
+                if (mb.getPoint().equals(new Point(x, y))) {
+                    nextMove = mb;
+                    break;
+                }
+            }
+        }
+
         if (x >= 0 && x < Board.BOARD_SIZE && y >= 0 && y < Board.BOARD_SIZE && cp[x][y] != null) {
+
             if (cp[x][y].isBlack() != board.isWhiteTurn()) {
                 if (cp[x][y] != selectedPiece)
                     posMovesToBoard(x, y, cp);
                 else
                     removePosMovesAndDrawBoard();
+            } else {
+                if (selectedPiece != null && nextMove != null) {
+                    selectedPiece.move(nextMove);
+                    if (!pawnIsChanging) MoveHandler.checkIfCompMove(board);
+                    removePosMovesAndDrawBoard();
+                } else
+                    removePosMovesAndDrawBoard();
             }
 
-            else if (selectedPiece != null && selectedPiece.canMove(x, y)) {
-                selectedPiece.move(x, y);
-                if (!pawnIsChanging) MoveHandler.checkIfCompMove(board);
-                removePosMovesAndDrawBoard();
-            } else
-                removePosMovesAndDrawBoard();
-
-        } else if (selectedPiece != null && selectedPiece.canMove(x, y)) {
-            selectedPiece.move(x, y);
+        } else if (selectedPiece != null && nextMove != null) {
+            selectedPiece.move(nextMove);
             if (!pawnIsChanging) MoveHandler.checkIfCompMove(board);
             removePosMovesAndDrawBoard();
-        }
-        else
+        } else
             removePosMovesAndDrawBoard();
     }
 
     private void posMovesToBoard(int x, int y, ChessPiece[][] cp) {
         posMoves = cp[x][y].getPossibleMovesWithCheckTest();
-        posMoves.add(new Point(x, y));
+        posMoves.add(new MoveBind(new Point(x, y), null, null));
         board.deletePosMoves();
         board.setPosMoves(posMoves);
         board.draw();

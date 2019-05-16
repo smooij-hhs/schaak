@@ -3,6 +3,7 @@ package chess;
 import chess.ai.Computer;
 import chess.chessPieces.*;
 import chess.utils.MouseInput;
+import chess.utils.MoveBind;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class Board extends JComponent {
     private ChessPiece[][] chessPieces;
     private boolean gameWon;
     private boolean whiteTurn;
-    private ArrayList<Point> posMoves = new ArrayList<>();
+    private ArrayList<MoveBind> posMoves = new ArrayList<>();
     private MouseInput mouseInput;
 
     private boolean whiteCheck;
@@ -46,7 +47,7 @@ public class Board extends JComponent {
         }
 
 //        whiteComp = new Computer(this, false);
-        blackComp = new Computer(this, true);
+//        blackComp = new Computer(this, true);
     }
 
     private void makeBoard() {
@@ -244,13 +245,14 @@ public class Board extends JComponent {
     }
 
     private void drawPosMoves(Graphics2D g2d) {
-        for (Point p : posMoves) {
-                g2d.setColor(Color.YELLOW);
-                g2d.setComposite(getComposite(0.5f));
+        for (MoveBind mb : posMoves) {
+            Point p = mb.getPoint();
+            g2d.setColor(Color.YELLOW);
+            g2d.setComposite(getComposite(0.5f));
 
-                g2d.fillRect(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            g2d.fillRect(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
 
-                g2d.setComposite(getComposite(1.0f));
+            g2d.setComposite(getComposite(1.0f));
         }
     }
 
@@ -268,7 +270,7 @@ public class Board extends JComponent {
         repaint();
     }
 
-    public void setPosMoves(ArrayList<Point> posMoves) {
+    public void setPosMoves(ArrayList<MoveBind> posMoves) {
         this.posMoves = posMoves;
     }
 

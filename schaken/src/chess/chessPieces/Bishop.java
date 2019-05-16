@@ -3,6 +3,7 @@ package chess.chessPieces;
 
 import chess.Board;
 import chess.SpriteSheet;
+import chess.utils.MoveBind;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ public class Bishop extends ChessPiece {
     }
 
     @Override
-    public ArrayList<Point> getPossibleMoves() {
+    public ArrayList<MoveBind> getPossibleMoves() {
         ChessPiece[][] cp = board.getChessPieces();
-        ArrayList<Point> res = new ArrayList<>();
+        ArrayList<MoveBind> res = new ArrayList<>();
 
         calcDiagonalLine(res, cp,  1,  1);
         calcDiagonalLine(res, cp,  1, -1);

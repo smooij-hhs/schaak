@@ -2,6 +2,7 @@ package chess.chessPieces;
 
 import chess.Board;
 import chess.SpriteSheet;
+import chess.utils.MoveBind;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public ArrayList<Point> getPossibleMoves() {
+    public ArrayList<MoveBind> getPossibleMoves() {
         ChessPiece[][] cp = board.getChessPieces();
-        ArrayList<Point> res = new ArrayList<>();
+        ArrayList<MoveBind> res = new ArrayList<>();
 
         calcStraightLine(res, cp,  1,  0);
         calcStraightLine(res, cp, -1,  0);

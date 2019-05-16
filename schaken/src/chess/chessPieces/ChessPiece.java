@@ -3,6 +3,9 @@ package chess.chessPieces;
 import chess.Board;
 import chess.framesAndPanels.panels.EastPanel;
 import chess.framesAndPanels.panels.NorthPanel;
+import chess.utils.MoveBind;
+import javafx.util.Pair;
+import sun.reflect.generics.tree.VoidDescriptor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,9 +41,9 @@ public abstract class ChessPiece {
         return location;
     }
 
-    public ArrayList<Point> getPossibleMovesWithCheckTest() {
-        ArrayList<Point> res = new ArrayList<>();
-        ArrayList<Point> posMoves = getPossibleMoves();
+    public ArrayList<MoveBind> getPossibleMovesWithCheckTest() {
+        ArrayList<MoveBind> res = new ArrayList<>();
+        ArrayList<MoveBind> posMoves = getPossibleMoves();
 
         if ((isBlack && !board.isBlackCheck()) || (!isBlack && !board.isWhiteCheck())) {
             checkIfMoveMakesCheckOwnColour(res, posMoves);
@@ -52,17 +55,18 @@ public abstract class ChessPiece {
         return res;
     }
 
-    private void checkIfMoveMakesCheckOwnColour(ArrayList<Point> res, ArrayList<Point> posMoves) {
+    private void checkIfMoveMakesCheckOwnColour(ArrayList<MoveBind> res, ArrayList<MoveBind> posMoves) {
         King king = isBlack ? board.getBlackKing() : board.getWhiteKing();
-        for (Point p : posMoves) {
+        for (MoveBind mb : posMoves) {
+            Point p = mb.getPoint();
             ChessPiece[][] cp = trueCopyDoubleArray(board.getChessPieces());
             moveTheoretical(cp, p.x, p.y);
             if (king.getCheckForCheck(cp, king.location.x, king.location.y))
-                res.add(p);
+                res.add(mb);
         }
     }
 
-    public abstract ArrayList<Point> getPossibleMoves();
+    public abstract ArrayList<MoveBind> getPossibleMoves();
 
     public void draw(Graphics g) {
         int offset = 16;
@@ -72,21 +76,38 @@ public abstract class ChessPiece {
         g.drawImage(sprite, xReal, yReal, 32, 32, null);
     }
 
-    public boolean move(int x, int y) {
-        if (canMove(x, y)) {
-            movePiece(x, y);
-            return true;
-        }
-        return false;
+    public void move(MoveBind moveBind) {
+        movePiece(moveBind);
     }
 
-    public boolean canMove(int x, int y) {
-        return getPossibleMovesWithCheckTest().contains(new Point(x, y));
+    public boolean canMove(MoveBind moveBind) {
+        return getPossibleMovesWithCheckTest().contains(moveBind);
     }
 
-    protected void movePiece(int x, int y) {
+    protected void movePiece(MoveBind moveBind) {
+        int x = moveBind.getPoint().x;
+        int y = moveBind.getPoint().y;
+        ChessPiece pieceToCapture = moveBind.getPieceToCapture();
+        Pair<ChessPiece, Point> pieceToMove = moveBind.getPieceToMove();
         ChessPiece[][] cp = board.getChessPieces();
+
+        if (pieceToCapture != null) {
+            Point loc = pieceToCapture.location;
+            cp[loc.x][loc.y] = null;
+        }
+        if (pieceToMove != null) {
+            ChessPiece ptm = pieceToMove.getKey();
+            Point oldLoc = ptm.location;
+            Point newLoc = pieceToMove.getValue();
+
+            cp[oldLoc.x][oldLoc.y] = null;
+            cp[newLoc.x][newLoc.y] = ptm;
+
+            ptm.location = newLoc;
+        }
+
         cp[location.x][location.y] = null;
+
         if (!hasMoved) hasMoved = true;
         cp[x][y] = this;
         location.x = x;
@@ -96,7 +117,6 @@ public abstract class ChessPiece {
         EAST_PANEL.addMove();
         board.setWhiteTurn(!board.isWhiteTurn());
     }
-
     public void moveTheoretical(ChessPiece[][] cp, int x, int y) {
         cp[location.x][location.y] = null;
         cp[x][y] = this;
@@ -104,7 +124,8 @@ public abstract class ChessPiece {
 
     protected void checkIfMakeCheck() {
         ChessPiece[][] cp = board.getChessPieces();
-        for (Point p : getPossibleMovesWithCheckTest()) {
+        for (MoveBind mb : getPossibleMovesWithCheckTest()) {
+            Point p = mb.getPoint();
             if (cp[p.x][p.y] != null && cp[p.x][p.y] instanceof King) {
                 if (isBlack) {
                     board.setWhiteCheck(true);
@@ -150,7 +171,7 @@ public abstract class ChessPiece {
         return isBlack;
     }
 
-    protected void calcDiagonalLine(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
+    protected void calcDiagonalLine(ArrayList<MoveBind> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir, y = location.y + yDir;
         int boardSize = Board.BOARD_SIZE;
 
@@ -159,17 +180,17 @@ public abstract class ChessPiece {
 
             if (cp[x][y] != null) {
                 if (pieceIsDifferentColor(cp[x][y]))
-                    res.add(newPoint);
+                    res.add(new MoveBind(newPoint, cp[x][y], null));
                 break;
             }
 
-            res.add(newPoint);
+            res.add(new MoveBind(newPoint, null, null));
             x += xDir;
             y += yDir;
         }
     }
 
-    protected void calcStraightLine(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
+    protected void calcStraightLine(ArrayList<MoveBind> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir, y = location.y + yDir;
         int boardSize = Board.BOARD_SIZE;
 
@@ -178,11 +199,11 @@ public abstract class ChessPiece {
 
             if (cp[x][y] != null) {
                 if (pieceIsDifferentColor(cp[x][y]))
-                    res.add(newPoint);
+                    res.add(new MoveBind(newPoint, cp[x][y], null));
                 break;
             }
 
-            res.add(newPoint);
+            res.add(new MoveBind(newPoint, null, null));
             x += xDir;
             y += yDir;
         }
@@ -190,16 +211,16 @@ public abstract class ChessPiece {
 
 
 
-    protected void calcSingleStepCapture(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
+    protected void calcSingleStepCapture(ArrayList<MoveBind> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir;
         int y = location.y + yDir;
         int boardSize = Board.BOARD_SIZE;
 
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             if (cp[x][y] == null)
-                res.add(new Point(x, y));
+                res.add(new MoveBind(new Point(x, y), null, null));
             else if (pieceIsDifferentColor(cp[x][y]))
-                res.add(new Point(x, y));
+                res.add(new MoveBind(new Point(x, y), cp[x][y], null));
         }
     }
 

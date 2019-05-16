@@ -55,13 +55,13 @@ public class Main {
             int xPos = Character.getNumericValue(input.charAt(0));
             int yPos = Character.getNumericValue(input.charAt(2));
 
-            while (!chessPieces[xPiece][yPiece].move(xPos,yPos)) {
-                System.out.println();
-                System.out.println("This piece can't move to (" + xPos + "," + yPos + ")\nPlease try again:");
-                input = read.nextLine();
-                xPos = Character.getNumericValue(input.charAt(0));
-                yPos = Character.getNumericValue(input.charAt(2));
-            }
+//            while (!chessPieces[xPiece][yPiece].move(xPos,yPos)) {
+//                System.out.println();
+//                System.out.println("This piece can't move to (" + xPos + "," + yPos + ")\nPlease try again:");
+//                input = read.nextLine();
+//                xPos = Character.getNumericValue(input.charAt(0));
+//                yPos = Character.getNumericValue(input.charAt(2));
+//            }
 
             System.out.println();
             System.out.println();

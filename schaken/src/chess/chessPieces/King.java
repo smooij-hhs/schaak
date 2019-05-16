@@ -2,6 +2,8 @@ package chess.chessPieces;
 
 import chess.Board;
 import chess.SpriteSheet;
+import chess.utils.MoveBind;
+import javafx.util.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,27 +15,25 @@ public class King extends ChessPiece {
         sprite = SpriteSheet.grabImage(0, isBlack ? 1 : 0);
     }
 
-    @Override
-    public boolean move(int x, int y) {
-        if (getPossibleMovesWithCheckTest().contains(new Point(x, y))) {
-            int xDiff = location.x - x;
-            if (Math.abs(xDiff) == 2) {
-                boolean isZeroRook = xDiff > 0;
-                int xRook = isZeroRook ? 0 : 7;
-                int newXRook = isZeroRook ? location.x - 1 : location.x + 1;
-                Rook rook = (Rook) board.getChessPieces()[xRook][y];
-                rook.moveRookCastling(newXRook, y);
-            }
-            movePiece(x, y);
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public void move(MoveBind moveBind) {
+//            int x = moveBind.getPoint().x;
+//            int y = moveBind.getPoint().y;
+//            int xDiff = location.x - x;
+//            if (Math.abs(xDiff) == 2) {
+//                boolean isZeroRook = xDiff > 0;
+//                int xRook = isZeroRook ? 0 : 7;
+//                int newXRook = isZeroRook ? location.x - 1 : location.x + 1;
+//                Rook rook = (Rook) board.getChessPieces()[xRook][y];
+//                rook.moveRookCastling(newXRook, y);
+//            }
+//            movePiece(moveBind);
+//    }
 
     @Override
-    public ArrayList<Point> getPossibleMoves() {
+    public ArrayList<MoveBind> getPossibleMoves() {
         ChessPiece[][] cp = board.getChessPieces();
-        ArrayList<Point> res = new ArrayList<>();
+        ArrayList<MoveBind> res = new ArrayList<>();
 
         calcSingleStepCapture(res, cp, -1, -1);
         calcSingleStepCapture(res, cp, -1, 0);
@@ -50,28 +50,32 @@ public class King extends ChessPiece {
     }
 
     @Override
-    protected void calcSingleStepCapture(ArrayList<Point> res, ChessPiece[][] cp, int xDir, int yDir) {
+    protected void calcSingleStepCapture(ArrayList<MoveBind> res, ChessPiece[][] cp, int xDir, int yDir) {
         int x = location.x + xDir;
         int y = location.y + yDir;
         int boardSize = Board.BOARD_SIZE;
 
         if (x < boardSize && y < boardSize && x >= 0 && y >= 0) {
             if (cp[x][y] == null && getCheckForCheck(cp, x, y))
-                res.add(new Point(x, y));
+                res.add(new MoveBind(new Point(x, y), null, null));
             else if (cp[x][y] != null && pieceIsDifferentColor(cp[x][y]) && getCheckForCheck(cp, x, y))
-                res.add(new Point(x, y));
+                res.add(new MoveBind(new Point(x, y), cp[x][y], null));
         }
     }
 
-    private void calcCastling(ArrayList<Point> res, ChessPiece[][] cp) {
+    private void calcCastling(ArrayList<MoveBind> res, ChessPiece[][] cp) {
+        int x = location.x;
         int y = location.y;
-        if (!hasMoved && getCheckForCheck(cp, location.x, y)) {
+        if (!hasMoved && getCheckForCheck(cp, x, y)) {
             ChessPiece zeroRook = cp[0][y];
             ChessPiece sevenRook = cp[7][y];
-            if (checkIfCanCastleForRook(cp, zeroRook, y, true))
-                res.add(new Point(location.x - 2, y));
-            if (checkIfCanCastleForRook(cp, sevenRook, y, false))
-                res.add(new Point(location.x + 2, y));
+            if (checkIfCanCastleForRook(cp, zeroRook, y, true)) {
+                Pair<ChessPiece, Point> pieceToMove = new Pair<>(zeroRook, new Point(x - 1, y));
+                res.add(new MoveBind(new Point(x - 2, y), null, pieceToMove));
+            } if (checkIfCanCastleForRook(cp, sevenRook, y, false)) {
+                Pair<ChessPiece, Point> pieceToMove = new Pair<>(zeroRook, new Point(x + 1, y));
+                res.add(new MoveBind(new Point(x + 2, y), null, pieceToMove));
+            }
         }
 
     }
