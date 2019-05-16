@@ -14,22 +14,7 @@ public class King extends ChessPiece {
         super(x, y, isBlack, board);
         sprite = SpriteSheet.grabImage(0, isBlack ? 1 : 0);
     }
-
-//    @Override
-//    public void move(MoveBind moveBind) {
-//            int x = moveBind.getPoint().x;
-//            int y = moveBind.getPoint().y;
-//            int xDiff = location.x - x;
-//            if (Math.abs(xDiff) == 2) {
-//                boolean isZeroRook = xDiff > 0;
-//                int xRook = isZeroRook ? 0 : 7;
-//                int newXRook = isZeroRook ? location.x - 1 : location.x + 1;
-//                Rook rook = (Rook) board.getChessPieces()[xRook][y];
-//                rook.moveRookCastling(newXRook, y);
-//            }
-//            movePiece(moveBind);
-//    }
-
+    
     @Override
     public ArrayList<MoveBind> getPossibleMoves() {
         ChessPiece[][] cp = board.getChessPieces();
