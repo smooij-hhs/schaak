@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Schaak.iml" filepath="$PROJECT_DIR$/Schaak.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Out/Out.iml" filepath="$PROJECT_DIR$/Out/Out.iml" />
+      <module fileurl="file://$PROJECT_DIR$/schaak.iml" filepath="$PROJECT_DIR$/schaak.iml" />
     </modules>
   </component>
 </project>
