@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
@@ -7,24 +9,23 @@ public class Pion extends Stuk {
     }
 
     @Override
-    public void updateMogelijkeZetten(Speelveld veld) {
-        //clear hashmap
-        mogelijkeZetten.clear();
+    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+        ArrayList<Zet> stukArrayList = new ArrayList<>();
 
         //als het een witte pion is (nog rekening houden met array out of bounds)
-        if (getKleur() == true) {
+        if (getKleur()) {
             if (rij - 1 >= 0) {
                 if (veld.getStukken()[rij - 1][kolom] == null) {
-                    mogelijkeZetten.add(new Zet(rij - 1, kolom));
+                    stukArrayList.add(new Zet(rij, kolom, rij - 1, kolom));
                 }
                 if (kolom - 1 >= 0) {
                     if (veld.getStukken()[rij - 1][kolom - 1] != null && veld.getStukken()[rij - 1][kolom - 1].getKleur() != kleur) {
-                        mogelijkeZetten.add(new Zet(rij - 1, kolom - 1));
+                        stukArrayList.add(new Zet(rij, kolom, rij - 1, kolom - 1));
                     }
                 }
                 if (kolom + 1 <= 7) {
                     if (veld.getStukken()[rij - 1][kolom + 1] != null && veld.getStukken()[rij - 1][kolom + 1].getKleur() != kleur) {
-                        mogelijkeZetten.add(new Zet(rij - 1, kolom + 1));
+                        stukArrayList.add(new Zet(rij, kolom, rij - 1, kolom + 1));
                     }
                 }
             }
@@ -33,20 +34,21 @@ public class Pion extends Stuk {
         else {
             if (rij + 1 <= 7) {
                 if (veld.getStukken()[rij + 1][kolom] == null) {
-                    mogelijkeZetten.add(new Zet(rij + 1, kolom));
+                    stukArrayList.add(new Zet(rij, kolom, rij + 1, kolom));
                 }
                 if (kolom - 1 >= 0) {
                     if (veld.getStukken()[rij + 1][kolom - 1] != null && veld.getStukken()[rij + 1][kolom - 1].getKleur() != kleur) {
-                        mogelijkeZetten.add(new Zet(rij + 1, kolom - 1));
+                        stukArrayList.add(new Zet(rij, kolom, rij + 1, kolom - 1));
                     }
                 }
                 if (kolom + 1 <= 7) {
                     if (veld.getStukken()[rij + 1][kolom + 1] != null && veld.getStukken()[rij + 1][kolom + 1].getKleur() != kleur) {
-                        mogelijkeZetten.add(new Zet(rij + 1, kolom + 1));
+                        stukArrayList.add(new Zet(rij, kolom, rij + 1, kolom + 1));
                     }
                 }
             }
         }
+        return stukArrayList;
     }
 
     public String toString() {

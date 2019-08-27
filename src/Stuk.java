@@ -7,7 +7,7 @@ public abstract class Stuk {
     protected boolean kleur;
     protected int rij;
     protected int kolom;
-    protected ArrayList<Zet> mogelijkeZetten = new ArrayList<>();
+
 
     public Stuk(boolean kleur, int rij, int kolom) {
         this.kleur = kleur;
@@ -15,7 +15,7 @@ public abstract class Stuk {
         this.kolom = kolom;
     }
 
-    public abstract void updateMogelijkeZetten(Speelveld veld);
+    public abstract ArrayList<Zet> updateMogelijkeZetten(Speelveld veld);
 
     public void setCoordinaten(int rij, int kolom) {
         this.rij = rij;

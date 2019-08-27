@@ -1,16 +1,21 @@
+import java.util.ArrayList;
+
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
 public final class Speelveld {
     private final Stuk[][] stukken;
+    private ArrayList<Zet> alleMogelijkeZetten = new ArrayList<>();
+    private String winnaar;
     //beurt true = wit is aan zet
 
 
     //spel wordt voor het eerst opgestart
     public Speelveld() {
         stukken = new Stuk[8][8];
-        creerStukken();
-        updateAlleMogelijkeZetten();
+
+        /*creerStukken();
+        updateAlleMogelijkeZetten();*/
     }
 
     public Speelveld(Stuk[][] stukken) {
@@ -24,10 +29,10 @@ public final class Speelveld {
         for (int i = 0; i < getStukken().length; i++) {
             for (int j = 0; j < getStukken()[i].length; j++) {
                 if (getStukken()[i][j] instanceof Koning) {
-                    if (getStukken()[i][j].kleur == true) {
+                    if (getStukken()[i][j].kleur) {
                         koningWit = true;
                     }
-                    if (getStukken()[i][j].kleur == false) {
+                    if (!getStukken()[i][j].kleur) {
                         koningZwart = true;
                     }
                 }
@@ -35,10 +40,12 @@ public final class Speelveld {
         }
         if (koningWit && !koningZwart) {
             System.out.println("Wit heeft gewonnen");
+            winnaar = "Wit";
             return true;
         }
         if (!koningWit && koningZwart) {
             System.out.println("Zwart heeft gewonnen");
+            winnaar = "Zwart";
             return true;
         }
         return false;
@@ -75,8 +82,7 @@ public final class Speelveld {
         for (int i = 0; i < 8; i++) {
             System.out.print(i + " ");
             for (int j = 0; j < 8; j++) {
-                Stuk ditStuk = null;
-                ditStuk = getStukken()[i][j];
+                Stuk ditStuk = getStukken()[i][j];
                 if (ditStuk == null) {
                     System.out.print(' ');
                 } else System.out.print(getStukken()[i][j]);
@@ -91,20 +97,29 @@ public final class Speelveld {
         for (int i = 0; i < stukken.length; i++) {
             for (int j = 0; j < stukken[i].length; j++) {
                 if (stukken[i][j] != null) {
-                    stukken[i][j].updateMogelijkeZetten(this);
+                    ArrayList<Zet> stukArrayList= stukken[i][j].updateMogelijkeZetten(this);
+
+                    if (stukArrayList != null) {
+                        alleMogelijkeZetten.addAll(stukArrayList);
+                    }
                 }
             }
         }
     }
 
-    public Stuk[][] move(int startRij, int startKolom, int eindRij, int eindKolom) {
+    public Speelveld move(Zet zet) {
         Stuk[][] stukkenCopy = stukken.clone();
 
-        stukkenCopy[eindRij][eindKolom] = stukken[startRij][startKolom];
-        stukkenCopy[eindRij][eindKolom].setCoordinaten(eindRij, eindKolom);
-        stukkenCopy[startRij][startKolom] = null;
+        //het stuk op de startPlek van 'stukken' array wordt verplaatst naar de eindplek  bij de 'stukkenCopy' array
+        stukkenCopy[zet.getEindRij()][zet.getEindKolom()] = stukken[zet.getStartRij()][zet.getStartKolom()];
 
-        return stukkenCopy;
+        //verander de interne coordinaten van het verplaatste stuk
+        stukkenCopy[zet.getEindRij()][zet.getEindKolom()].setCoordinaten(zet.getEindRij(), zet.getEindKolom());
+
+        //maak de plek leeg in de copy array
+        stukkenCopy[zet.getStartRij()][zet.getStartKolom()] = null;
+
+        return new Speelveld(stukkenCopy);
     }
 
     public boolean checkSpelerMagGekozenStukBewegen(int rij, int kolom, boolean beurt) {
@@ -124,18 +139,25 @@ public final class Speelveld {
         return false;
     }
 
-    public boolean stukMagNaarGekozenVeld(int startRij, int startKolom, int eindRij, int eindKolom) {
-        for (int i = 0; i < stukken[startRij][startKolom].mogelijkeZetten.size(); i++) {
-            if (stukken[startRij][startKolom].mogelijkeZetten.get(i).getRij() == eindRij && stukken[startRij][startKolom].mogelijkeZetten.get(i).getKolom() == eindKolom) {
+    public boolean stukMagNaarGekozenVeld(Zet zet) {
+        for (int i = 0; i < alleMogelijkeZetten.size(); i++) {
+
+            if (alleMogelijkeZetten.get(i).getStartRij() == zet.getStartRij() &&
+                    alleMogelijkeZetten.get(i).getStartKolom() == zet.getStartKolom() &&
+                    alleMogelijkeZetten.get(i).getEindRij() == zet.getEindRij() &&
+                    alleMogelijkeZetten.get(i).getEindKolom() == zet.getEindKolom()) {
                 return true;
             }
         }
-
         System.out.println("Dit is geen geldige zet!");
         return false;
     }
 
     public Stuk[][] getStukken() {
         return stukken;
+    }
+
+    public String getWinnaar() {
+        return winnaar;
     }
 }

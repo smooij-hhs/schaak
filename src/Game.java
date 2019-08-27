@@ -5,21 +5,21 @@ import java.util.Scanner;
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 27-8-2019
  */
 public class Game {
-    private Speelveld huidigeVeld;
+
     private ArrayList<Speelveld> history = new ArrayList<>();
     private ArrayList<Speelveld> mogelijkeSpeelvelden = new ArrayList<>();
     private boolean beurt;
 
     public Game() {
-        beurt=true;
-        huidigeVeld=new Speelveld();
-        history.add(huidigeVeld);
+        beurt = true;
+        history.add(new Speelveld());
     }
 
     public void run() {
 
-        while (!huidigeVeld.checkGameOver()) {
-            huidigeVeld.printVeld();
+        while (!history.get(history.size() - 1).checkGameOver()) {
+            Speelveld laatsteSpeelveld = history.get(history.size() - 1);
+            laatsteSpeelveld.printVeld();
 
             Scanner sc = new Scanner(System.in);
             boolean spelerMagGekozenStukBewegen = false;
@@ -28,9 +28,10 @@ public class Game {
             int startKolom = 0;
             int eindRij = 0;
             int eindKolom = 0;
+            Zet dezeZet = new Zet(startRij, startKolom, eindRij, eindKolom);
 
 
-            if (beurt == true) {
+            if (beurt) {
                 System.out.println("Wit is aan de beurt...");
             } else {
                 System.out.println("Zwart is aan de beurt...");
@@ -41,7 +42,8 @@ public class Game {
                     startRij = sc.nextInt();
                     System.out.println("Welk stuk (kolom) wil je bewegen?");
                     startKolom = sc.nextInt();
-                    if (huidigeVeld.checkSpelerMagGekozenStukBewegen(startRij, startKolom,beurt)) {
+
+                    if (laatsteSpeelveld.checkSpelerMagGekozenStukBewegen(startRij, startKolom, beurt)) {
                         spelerMagGekozenStukBewegen = true;
                     }
                 }
@@ -50,19 +52,24 @@ public class Game {
                 eindRij = sc.nextInt();
                 System.out.println("Naar welk veld (kolom wil je dit stuk bewegen?");
                 eindKolom = sc.nextInt();
-
-                if (huidigeVeld.stukMagNaarGekozenVeld(startRij, startKolom, eindRij, eindKolom)) {
+                dezeZet = new Zet(startRij, startKolom, eindRij, eindKolom);
+                if (laatsteSpeelveld.stukMagNaarGekozenVeld(new Zet(startRij, startKolom, eindRij, eindKolom))) {
                     spelerHeeftGeldigeBeurtGemaakt = true;
                 }
             }
 
             // huidigeveld wordt vervangen door een nieuw speelveld waarop de 2d array is overschreven
-            huidigeVeld=new Speelveld(huidigeVeld.move(startRij, startKolom, eindRij, eindKolom));
-            history.add(huidigeVeld);
-            beurt=!beurt;
+
+            history.add(laatsteSpeelveld.move(dezeZet));
+            beurt = !beurt;
 
             //test
             //System.out.println(history.size());
         }
+        // hier code schrijven om de winnaar te bepalen (wit/zwart)
+    }
+
+    public String bepaalWinaar() {
+        return history.get(history.size() - 1).getWinnaar();
     }
 }

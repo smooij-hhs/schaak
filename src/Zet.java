@@ -3,21 +3,35 @@
  */
 public class Zet {
 
-    int rij;
-    int kolom;
+    int startRij;
+    int startKolom;
+    int eindRij;
+    int eindKolom;
 
-    public Zet(int rij, int kolom) {
-        this.rij = rij;
-        this.kolom = kolom;
+    public Zet(int startRij, int startKolom, int eindRij, int eindKolom) {
+        this.startRij = startRij;
+        this.startKolom = startKolom;
+        this.eindRij = eindRij;
+        this.eindKolom = eindKolom;
     }
 
-    public int getRij() {
-        return rij;
+    public int getStartRij() {
+        return startRij;
     }
 
-    public int getKolom() {
-        return kolom;
+    public int getStartKolom() {
+        return startKolom;
     }
 
-    public String toString(){return "Rij: "+rij+" Kolom: "+kolom;}
+    public int getEindRij() {
+        return eindRij;
+    }
+
+    public int getEindKolom() {
+        return eindKolom;
+    }
+
+    public String toString() {
+        return "Startrij: " + startRij + " Startkolom: " + startKolom + " Eindrij: " + eindRij + " Eindkolom: " + eindKolom + "\n";
+    }
 }
