@@ -1,27 +1,47 @@
-import java.util.Scanner;
-
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
-public class Speelveld {
-    private Stuk[][] stukken = new Stuk[8][8];
+public final class Speelveld {
+    private final Stuk[][] stukken;
     //beurt true = wit is aan zet
-    private boolean beurt;
-    private boolean gameover;
+
 
     //spel wordt voor het eerst opgestart
     public Speelveld() {
-        beurt = true;
+        stukken = new Stuk[8][8];
         creerStukken();
         updateAlleMogelijkeZetten();
-        run();
     }
 
-    //toekomsige uitbreiding
-    public Speelveld(boolean beurt, Stuk[][] stukken) {
-        this.beurt = beurt;
+    public Speelveld(Stuk[][] stukken) {
         this.stukken = stukken;
         updateAlleMogelijkeZetten();
+    }
+
+    public boolean checkGameOver() {
+        boolean koningWit = false;
+        boolean koningZwart = false;
+        for (int i = 0; i < getStukken().length; i++) {
+            for (int j = 0; j < getStukken()[i].length; j++) {
+                if (getStukken()[i][j] instanceof Koning) {
+                    if (getStukken()[i][j].kleur == true) {
+                        koningWit = true;
+                    }
+                    if (getStukken()[i][j].kleur == false) {
+                        koningZwart = true;
+                    }
+                }
+            }
+        }
+        if (koningWit && !koningZwart) {
+            System.out.println("Wit heeft gewonnen");
+            return true;
+        }
+        if (!koningWit && koningZwart) {
+            System.out.println("Zwart heeft gewonnen");
+            return true;
+        }
+        return false;
     }
 
     public void creerStukken() {
@@ -56,52 +76,10 @@ public class Speelveld {
             System.out.print(i + " ");
             for (int j = 0; j < 8; j++) {
                 Stuk ditStuk = null;
-                ditStuk = getSpeelveld(i, j);
+                ditStuk = getStukken()[i][j];
                 if (ditStuk == null) {
                     System.out.print(' ');
-                }
-                if (ditStuk instanceof Pion) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('X');
-                    } else {
-                        System.out.print('x');
-                    }
-                }
-                if (ditStuk instanceof Paard) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('N');
-                    } else {
-                        System.out.print('n');
-                    }
-                }
-                if (ditStuk instanceof Toren) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('R');
-                    } else {
-                        System.out.print('r');
-                    }
-                }
-                if (ditStuk instanceof Loper) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('B');
-                    } else {
-                        System.out.print('b');
-                    }
-                }
-                if (ditStuk instanceof Koningin) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('Q');
-                    } else {
-                        System.out.print('q');
-                    }
-                }
-                if (ditStuk instanceof Koning) {
-                    if (ditStuk.getKleur() == true) {
-                        System.out.print('K');
-                    } else {
-                        System.out.print('k');
-                    }
-                }
+                } else System.out.print(getStukken()[i][j]);
                 System.out.print(" ");
             }
             System.out.println();
@@ -119,39 +97,17 @@ public class Speelveld {
         }
     }
 
-    public void move(int startRij, int startKolom, int eindRij, int eindKolom) {
-        stukken[eindRij][eindKolom] = stukken[startRij][startKolom];
-        stukken[eindRij][eindKolom].setCoordinaten(eindRij, eindKolom);
-        stukken[startRij][startKolom] = null;
-        beurt = !beurt;
+    public Stuk[][] move(int startRij, int startKolom, int eindRij, int eindKolom) {
+        Stuk[][] stukkenCopy = stukken.clone();
+
+        stukkenCopy[eindRij][eindKolom] = stukken[startRij][startKolom];
+        stukkenCopy[eindRij][eindKolom].setCoordinaten(eindRij, eindKolom);
+        stukkenCopy[startRij][startKolom] = null;
+
+        return stukkenCopy;
     }
 
-    public void checkGameOver() {
-        boolean koningWit = false;
-        boolean koningZwart = false;
-        for (int i = 0; i < stukken.length; i++) {
-            for (int j = 0; j < stukken[i].length; j++) {
-                if (stukken[i][j] instanceof Koning) {
-                    if (stukken[i][j].kleur == true) {
-                        koningWit = true;
-                    }
-                    if (stukken[i][j].kleur == false) {
-                        koningZwart = true;
-                    }
-                }
-            }
-        }
-        if (koningWit && !koningZwart) {
-            System.out.println("Wit heeft gewonnen");
-            gameover = true;
-        }
-        if (!koningWit && koningZwart) {
-            System.out.println("Zwart heeft gewonnen");
-            gameover = true;
-        }
-    }
-
-    public boolean checkSpelerMagGekozenStukBewegen(int rij, int kolom) {
+    public boolean checkSpelerMagGekozenStukBewegen(int rij, int kolom, boolean beurt) {
         if (rij > 7 || rij < 0 || kolom > 7 || kolom < 0) {
             System.out.println("Deze coordinaten vallen buiten het bord");
         } else {
@@ -169,63 +125,16 @@ public class Speelveld {
     }
 
     public boolean stukMagNaarGekozenVeld(int startRij, int startKolom, int eindRij, int eindKolom) {
-        if (stukken[startRij][startKolom].mogelijkeZetten.containsKey(eindRij) && stukken[startRij][startKolom].mogelijkeZetten.containsValue(eindKolom)) {
-            return true;
+        for (int i = 0; i < stukken[startRij][startKolom].mogelijkeZetten.size(); i++) {
+            if (stukken[startRij][startKolom].mogelijkeZetten.get(i).getRij() == eindRij && stukken[startRij][startKolom].mogelijkeZetten.get(i).getKolom() == eindKolom) {
+                return true;
+            }
         }
+
         System.out.println("Dit is geen geldige zet!");
         return false;
     }
 
-    public void run() {
-
-        while (!gameover) {
-            printVeld();
-
-            Scanner sc = new Scanner(System.in);
-            boolean spelerMagGekozenStukBewegen = false;
-            boolean spelerHeeftGeldigeBeurtGemaakt = false;
-            int startRij=0;
-            int startKolom=0;
-            int eindRij=0;
-            int eindKolom=0;
-
-
-
-            if (beurt == true) {
-                System.out.println("Wit is aan de beurt...");
-            } else {
-                System.out.println("Zwart is aan de beurt...");
-            }
-            while (!spelerHeeftGeldigeBeurtGemaakt) {
-                while (!spelerMagGekozenStukBewegen) {
-                    System.out.println("Welk stuk (rij) wil je bewegen?");
-                    startRij = sc.nextInt();
-                    System.out.println("Welk stuk (kolom) wil je bewegen?");
-                    startKolom = sc.nextInt();
-                    if (checkSpelerMagGekozenStukBewegen(startRij, startKolom)) {
-                        spelerMagGekozenStukBewegen = true;
-                    }
-                }
-
-                System.out.println("Naar welk veld (rij) wil je dit stuk bewegen?");
-                eindRij = sc.nextInt();
-                System.out.println("Naar welk veld (kolom wil je dit stuk bewegen?");
-                eindKolom = sc.nextInt();
-                //deze if uitzetten voor test doeleinden
-                if (stukMagNaarGekozenVeld(startRij,startKolom,eindRij, eindKolom)) {
-                    spelerHeeftGeldigeBeurtGemaakt = true;
-                }
-            }
-
-            move(startRij,startKolom,eindRij,eindKolom);
-            updateAlleMogelijkeZetten();
-            checkGameOver();
-        }
-    }
-
-    public Stuk getSpeelveld(int rij, int kolom) {
-        return stukken[rij][kolom];
-    }
     public Stuk[][] getStukken() {
         return stukken;
     }

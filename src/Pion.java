@@ -15,16 +15,16 @@ public class Pion extends Stuk {
         if (getKleur() == true) {
             if (rij - 1 >= 0) {
                 if (veld.getStukken()[rij - 1][kolom] == null) {
-                    mogelijkeZetten.put(rij - 1, kolom);
+                    mogelijkeZetten.add(new Zet(rij - 1, kolom));
                 }
                 if (kolom - 1 >= 0) {
                     if (veld.getStukken()[rij - 1][kolom - 1] != null && veld.getStukken()[rij - 1][kolom - 1].getKleur() != kleur) {
-                        mogelijkeZetten.put(rij - 1, kolom - 1);
+                        mogelijkeZetten.add(new Zet(rij - 1, kolom - 1));
                     }
                 }
                 if (kolom + 1 <= 7) {
                     if (veld.getStukken()[rij - 1][kolom + 1] != null && veld.getStukken()[rij - 1][kolom + 1].getKleur() != kleur) {
-                        mogelijkeZetten.put(rij - 1, kolom + 1);
+                        mogelijkeZetten.add(new Zet(rij - 1, kolom + 1));
                     }
                 }
             }
@@ -33,20 +33,26 @@ public class Pion extends Stuk {
         else {
             if (rij + 1 <= 7) {
                 if (veld.getStukken()[rij + 1][kolom] == null) {
-                    mogelijkeZetten.put(rij + 1, kolom);
+                    mogelijkeZetten.add(new Zet(rij + 1, kolom));
                 }
                 if (kolom - 1 >= 0) {
                     if (veld.getStukken()[rij + 1][kolom - 1] != null && veld.getStukken()[rij + 1][kolom - 1].getKleur() != kleur) {
-                        mogelijkeZetten.put(rij + 1, kolom - 1);
+                        mogelijkeZetten.add(new Zet(rij + 1, kolom - 1));
                     }
                 }
                 if (kolom + 1 <= 7) {
                     if (veld.getStukken()[rij + 1][kolom + 1] != null && veld.getStukken()[rij + 1][kolom + 1].getKleur() != kleur) {
-                        mogelijkeZetten.put(rij + 1, kolom + 1);
+                        mogelijkeZetten.add(new Zet(rij + 1, kolom + 1));
                     }
                 }
             }
         }
+    }
+
+    public String toString() {
+        if (kleur) {
+            return "X";
+        } else return "x";
     }
 
 

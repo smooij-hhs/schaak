@@ -10,4 +10,11 @@ public class Koningin extends Stuk {
     public void updateMogelijkeZetten(Speelveld veld) {
 
     }
+
+    @Override
+    public String toString() {
+        if (kleur) {
+            return "Q";
+        } else return "q";
+    }
 }

@@ -10,4 +10,11 @@ public class Paard extends Stuk {
     public void updateMogelijkeZetten(Speelveld veld) {
 
     }
+
+    @Override
+    public String toString() {
+        if (kleur) {
+            return "N";
+        } else return "n";
+    }
 }

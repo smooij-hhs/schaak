@@ -10,4 +10,11 @@ public class Toren extends Stuk {
     public void updateMogelijkeZetten(Speelveld veld) {
 
     }
+
+    @Override
+    public String toString() {
+        if (kleur) {
+            return "R";
+        } else return "r";
+    }
 }

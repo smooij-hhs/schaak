@@ -3,7 +3,8 @@
  */
 public class main {
     public static void main(String[] args) {
-        Speelveld beginveld = new Speelveld();
+        Game game = new Game();
+        game.run();
 
     }
 }

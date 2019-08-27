@@ -10,4 +10,11 @@ public class Loper extends Stuk {
     public void updateMogelijkeZetten(Speelveld veld) {
 
     }
+
+    @Override
+    public String toString() {
+        if (kleur) {
+            return "B";
+        } else return "b";
+    }
 }
