@@ -10,8 +10,83 @@ public class Loper extends Stuk {
 
     @Override
     public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+        ArrayList<Zet> stukArrayList = new ArrayList<>();
 
-        return null;
+        int rijCoordinaat = rij;
+        int kolomCoordinaat = kolom;
+
+        //schuinlinksboven
+
+        while (rijCoordinaat>0&&kolomCoordinaat>0){
+            if(veld.getStukken()[rijCoordinaat-1][kolomCoordinaat-1]==null){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat-1,kolomCoordinaat-1));
+                rijCoordinaat--;
+                kolomCoordinaat--;
+            }else if(veld.getStukken()[rijCoordinaat-1][kolomCoordinaat-1].kleur!=kleur){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat-1,kolomCoordinaat-1));
+                rijCoordinaat=0;
+                kolomCoordinaat=0;
+            }else {
+                rijCoordinaat=0;
+                kolomCoordinaat=0;
+            }
+        }
+        rijCoordinaat=rij;
+        kolomCoordinaat=kolom;
+
+        //schuinrechtsboven
+        while (rijCoordinaat>0&&kolomCoordinaat<7){
+            if(veld.getStukken()[rijCoordinaat-1][kolomCoordinaat+1]==null){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat-1,kolomCoordinaat+1));
+                rijCoordinaat--;
+                kolomCoordinaat++;
+            }else if(veld.getStukken()[rijCoordinaat-1][kolomCoordinaat+1].kleur!=kleur){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat-1,kolomCoordinaat+1));
+                rijCoordinaat=0;
+                kolomCoordinaat=7;
+            }else {
+                rijCoordinaat=0;
+                kolomCoordinaat=7;
+            }
+        }
+        rijCoordinaat=rij;
+        kolomCoordinaat=kolom;
+
+        //schuinrechtsonder
+        while (rijCoordinaat<7&&kolomCoordinaat<7){
+            if(veld.getStukken()[rijCoordinaat+1][kolomCoordinaat+1]==null){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat+1,kolomCoordinaat+1));
+                rijCoordinaat++;
+                kolomCoordinaat++;
+            }else if(veld.getStukken()[rijCoordinaat+1][kolomCoordinaat+1].kleur!=kleur){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat+1,kolomCoordinaat+1));
+                rijCoordinaat=7;
+                kolomCoordinaat=7;
+            }else {
+                rijCoordinaat=7;
+                kolomCoordinaat=7;
+            }
+        }
+        rijCoordinaat=rij;
+        kolomCoordinaat=kolom;
+
+        //schuinlinksonder
+        while (rijCoordinaat<7&&kolomCoordinaat>0){
+            if(veld.getStukken()[rijCoordinaat+1][kolomCoordinaat-1]==null){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat+1,kolomCoordinaat-1));
+                rijCoordinaat++;
+                kolomCoordinaat--;
+            }else if(veld.getStukken()[rijCoordinaat+1][kolomCoordinaat-1].kleur!=kleur){
+                stukArrayList.add(new Zet(rij,kolom,rijCoordinaat+1,kolomCoordinaat-1));
+                rijCoordinaat=7;
+                kolomCoordinaat=0;
+            }else {
+                rijCoordinaat=7;
+                kolomCoordinaat=0;
+            }
+        }
+
+        return stukArrayList;
     }
 
     @Override

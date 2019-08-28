@@ -4,13 +4,10 @@
 
 
 /*TODO
- * V0.57
+ * V0.58
  * Feedback 27-8 moet nog gedeeltelijk verwerkt worden (gedeelte over eerste AI en Speler Interface) (laatste twee alinias)
  * Methode updateMogelijkeZetten voor de volgende stukken:
  * Pion (afmaken: promoveren + twee plekken vooruit op eerste rij)
- * Toren
- * Paard
- * Loper
  * Koningin
  * Speciale regels (promoveren/rokeren)
  * */
