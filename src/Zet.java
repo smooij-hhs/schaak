@@ -3,35 +3,35 @@
  */
 public class Zet {
 
-    int startRij;
-    int startKolom;
-    int eindRij;
-    int eindKolom;
+    private final int STARTRIJ;
+    private final int STARTKOLOM;
+    private final int EINDRIJ;
+    private final int EINDKOLOM;
 
-    public Zet(int startRij, int startKolom, int eindRij, int eindKolom) {
-        this.startRij = startRij;
-        this.startKolom = startKolom;
-        this.eindRij = eindRij;
-        this.eindKolom = eindKolom;
+    public Zet(int STARTRIJ, int STARTKOLOM, int EINDRIJ, int EINDKOLOM) {
+        this.STARTRIJ = STARTRIJ;
+        this.STARTKOLOM = STARTKOLOM;
+        this.EINDRIJ = EINDRIJ;
+        this.EINDKOLOM = EINDKOLOM;
     }
 
-    public int getStartRij() {
-        return startRij;
+    public int getSTARTRIJ() {
+        return STARTRIJ;
     }
 
-    public int getStartKolom() {
-        return startKolom;
+    public int getSTARTKOLOM() {
+        return STARTKOLOM;
     }
 
-    public int getEindRij() {
-        return eindRij;
+    public int getEINDRIJ() {
+        return EINDRIJ;
     }
 
-    public int getEindKolom() {
-        return eindKolom;
+    public int getEINDKOLOM() {
+        return EINDKOLOM;
     }
 
     public String toString() {
-        return "Startrij: " + startRij + " Startkolom: " + startKolom + " Eindrij: " + eindRij + " Eindkolom: " + eindKolom + "\n";
+        return "Startrij: " + STARTRIJ + " Startkolom: " + STARTKOLOM + " Eindrij: " + EINDRIJ + " Eindkolom: " + EINDKOLOM + "\n";
     }
 }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
 public abstract class Stuk {
-    protected boolean kleur;
+    protected final boolean KLEUR;
     protected int rij;
     protected int kolom;
 
 
-    public Stuk(boolean kleur, int rij, int kolom) {
-        this.kleur = kleur;
+    public Stuk(boolean KLEUR, int rij, int kolom) {
+        this.KLEUR = KLEUR;
         this.rij = rij;
         this.kolom = kolom;
     }
@@ -22,10 +22,14 @@ public abstract class Stuk {
         this.kolom = kolom;
     }
 
-    public boolean getKleur() {
-        return kleur;
+    public boolean getKLEUR() {
+        return KLEUR;
     }
 
     public abstract String toString();
+
+    public boolean magPromoveren() {
+        return false;
+    }
 
 }

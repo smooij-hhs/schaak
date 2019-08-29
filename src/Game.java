@@ -4,72 +4,75 @@ import java.util.Scanner;
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 27-8-2019
  */
+
+/*TODO
+ * V0.60
+ * Ai slimmer maken
+ * */
 public class Game {
 
-    private ArrayList<Speelveld> history = new ArrayList<>();
-    private ArrayList<Speelveld> mogelijkeSpeelvelden = new ArrayList<>();
+    private final ArrayList<Speelveld> HISTORY = new ArrayList<>();
     private boolean beurt;
 
     public Game() {
         beurt = true;
-        history.add(new Speelveld());
+        HISTORY.add(new Speelveld());
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.run();
+
     }
 
     public void run() {
+        Speler[] spelers = new Speler[2];
+        Scanner sc = new Scanner(System.in);
 
-        while (!history.get(history.size() - 1).checkGameOver()) {
-            Speelveld laatsteSpeelveld = history.get(history.size() - 1);
+        while (spelers[0] == null) {
+            System.out.println("Is speler één een (AI) of een (Mens)");
+            String input = sc.nextLine();
+            if (input.equalsIgnoreCase("AI")) {
+                spelers[0] = new Speler(true, true);
+            }
+            if (input.equalsIgnoreCase("Mens")) {
+                spelers[0] = new Speler(false, true);
+            }
+        }
+
+        while (spelers[1] == null) {
+            System.out.println("Is speler twee een (AI) of een (Mens)");
+            String input = sc.nextLine();
+            if (input.equalsIgnoreCase("AI")) {
+                spelers[1] = new Speler(true, false);
+            }
+            if (input.equalsIgnoreCase("Mens")) {
+                spelers[1] = new Speler(false, false);
+            }
+        }
+
+        while (!HISTORY.get(HISTORY.size() - 1).checkGameOver()) {
+            Speelveld laatsteSpeelveld = HISTORY.get(HISTORY.size() - 1);
+            Zet gekozenZet;
             laatsteSpeelveld.printVeld();
-
-            Scanner sc = new Scanner(System.in);
-            boolean spelerMagGekozenStukBewegen = false;
-            boolean spelerHeeftGeldigeBeurtGemaakt = false;
-            int startRij = 0;
-            int startKolom = 0;
-            int eindRij = 0;
-            int eindKolom = 0;
-            Zet dezeZet = new Zet(startRij, startKolom, eindRij, eindKolom);
 
 
             if (beurt) {
                 System.out.println("Wit is aan de beurt...");
+                gekozenZet = spelers[0].bepaalVolgendeZet(laatsteSpeelveld);
             } else {
                 System.out.println("Zwart is aan de beurt...");
+                gekozenZet = spelers[1].bepaalVolgendeZet(laatsteSpeelveld);
             }
-            while (!spelerHeeftGeldigeBeurtGemaakt) {
-                while (!spelerMagGekozenStukBewegen) {
-                    System.out.println("Welk stuk (rij) wil je bewegen?");
-                    startRij = sc.nextInt();
-                    System.out.println("Welk stuk (kolom) wil je bewegen?");
-                    startKolom = sc.nextInt();
 
-                    if (laatsteSpeelveld.checkSpelerMagGekozenStukBewegen(startRij, startKolom, beurt)) {
-                        spelerMagGekozenStukBewegen = true;
-                    }
-                }
-
-                System.out.println("Naar welk veld (rij) wil je dit stuk bewegen?");
-                eindRij = sc.nextInt();
-                System.out.println("Naar welk veld (kolom wil je dit stuk bewegen?");
-                eindKolom = sc.nextInt();
-                dezeZet = new Zet(startRij, startKolom, eindRij, eindKolom);
-                if (laatsteSpeelveld.stukMagNaarGekozenVeld(new Zet(startRij, startKolom, eindRij, eindKolom))) {
-                    spelerHeeftGeldigeBeurtGemaakt = true;
-                }
-            }
 
             // huidigeveld wordt vervangen door een nieuw speelveld waarop de 2d array is overschreven
-
-            history.add(laatsteSpeelveld.move(dezeZet));
+            HISTORY.add(laatsteSpeelveld.move(gekozenZet));
             beurt = !beurt;
-
-            //test
-            //System.out.println(history.size());
         }
-        // hier code schrijven om de winnaar te bepalen (wit/zwart)
     }
 
-    public String bepaalWinaar() {
-        return history.get(history.size() - 1).getWinnaar();
+    public String bepaalWinnaar() {
+        return HISTORY.get(HISTORY.size() - 1).getWinnaar();
     }
 }
