@@ -34,19 +34,7 @@ public class SpeelveldTest {
         assert veld2.getSTUKKEN()[7][1] instanceof Koningin;
     }
 
-    @Test
-    public void randomTestIndex() {
-        Speelveld speelveld = new Speelveld();
 
-
-        Random r = new Random();
-        for (int i = 0; i < 1000; i++) {
-            int willikeurigGetal = r.nextInt(speelveld.getALLEMOGELIJKEZETTEN().size());
-            System.out.println(willikeurigGetal);
-            assert willikeurigGetal <= 39;
-        }
-
-    }
 
 
 }

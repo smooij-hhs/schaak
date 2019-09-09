@@ -5,8 +5,6 @@ import java.util.ArrayList;
  */
 public final class Speelveld {
     private final Stuk[][] STUKKEN;
-    private final ArrayList<Zet> ALLEMOGELIJKEZETTEN = new ArrayList<>();
-    private String winnaar;
 
 
     //spel wordt voor het eerst opgestart
@@ -38,13 +36,13 @@ public final class Speelveld {
             }
         }
         if (koningWit && !koningZwart) {
+            printVeld();
             System.out.println("Wit heeft gewonnen");
-            winnaar = "Wit";
             return true;
         }
         if (!koningWit && koningZwart) {
+            printVeld();
             System.out.println("Zwart heeft gewonnen");
-            winnaar = "Zwart";
             return true;
         }
         return false;
@@ -92,7 +90,8 @@ public final class Speelveld {
         System.out.println();
     }
 
-    public void updateAlleMogelijkeZetten() {
+    public ArrayList<Zet> updateAlleMogelijkeZetten() {
+        final ArrayList<Zet> ALLEMOGELIJKEZETTEN = new ArrayList<>();
         for (int i = 0; i < STUKKEN.length; i++) {
             for (int j = 0; j < STUKKEN[i].length; j++) {
                 if (STUKKEN[i][j] != null) {
@@ -104,6 +103,7 @@ public final class Speelveld {
                 }
             }
         }
+        return ALLEMOGELIJKEZETTEN;
     }
 
     public Speelveld move(Zet zet) {
@@ -165,7 +165,7 @@ public final class Speelveld {
         return false;
     }
 
-    public boolean stukMagNaarGekozenVeld(Zet zet) {
+    public boolean stukMagNaarGekozenVeld(Zet zet, ArrayList<Zet> ALLEMOGELIJKEZETTEN) {
         for (int i = 0; i < ALLEMOGELIJKEZETTEN.size(); i++) {
 
             if (ALLEMOGELIJKEZETTEN.get(i).getSTARTRIJ() == zet.getSTARTRIJ() &&
@@ -181,13 +181,5 @@ public final class Speelveld {
 
     public Stuk[][] getSTUKKEN() {
         return STUKKEN;
-    }
-
-    public String getWinnaar() {
-        return winnaar;
-    }
-
-    public ArrayList<Zet> getALLEMOGELIJKEZETTEN() {
-        return ALLEMOGELIJKEZETTEN;
     }
 }

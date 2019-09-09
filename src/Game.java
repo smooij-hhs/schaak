@@ -26,28 +26,28 @@ public class Game {
     }
 
     public void run() {
-        Speler[] spelers = new Speler[2];
+        Speler[] speler = new Speler[2];
         Scanner sc = new Scanner(System.in);
 
-        while (spelers[0] == null) {
+        while (speler[0] == null) {
             System.out.println("Is speler één een (AI) of een (Mens)");
             String input = sc.nextLine();
             if (input.equalsIgnoreCase("AI")) {
-                spelers[0] = new Speler(true, true);
+                speler[0] = new AiJaap();
             }
             if (input.equalsIgnoreCase("Mens")) {
-                spelers[0] = new Speler(false, true);
+                speler[0] = new Mens();
             }
         }
 
-        while (spelers[1] == null) {
+        while (speler[1] == null) {
             System.out.println("Is speler twee een (AI) of een (Mens)");
             String input = sc.nextLine();
             if (input.equalsIgnoreCase("AI")) {
-                spelers[1] = new Speler(true, false);
+                speler[1] = new AiJaap();
             }
             if (input.equalsIgnoreCase("Mens")) {
-                spelers[1] = new Speler(false, false);
+                speler[1] = new Mens();
             }
         }
 
@@ -59,10 +59,10 @@ public class Game {
 
             if (beurt) {
                 System.out.println("Wit is aan de beurt...");
-                gekozenZet = spelers[0].bepaalVolgendeZet(laatsteSpeelveld);
+                gekozenZet = speler[0].bepaalVolgendeZet(laatsteSpeelveld,beurt);
             } else {
                 System.out.println("Zwart is aan de beurt...");
-                gekozenZet = spelers[1].bepaalVolgendeZet(laatsteSpeelveld);
+                gekozenZet = speler[1].bepaalVolgendeZet(laatsteSpeelveld,beurt);
             }
 
 
@@ -70,9 +70,7 @@ public class Game {
             HISTORY.add(laatsteSpeelveld.move(gekozenZet));
             beurt = !beurt;
         }
+
     }
 
-    public String bepaalWinnaar() {
-        return HISTORY.get(HISTORY.size() - 1).getWinnaar();
-    }
 }
