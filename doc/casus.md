@@ -14,6 +14,6 @@ De regels van de vereenvoudigde versie zijn gelijk aan de regels van het normale
 
 - Gelijkspel is geen optie.
 
-- Een pion die de overkant bereikt promoveert altijd naar een koningin.
+- Een pion die de overkant bereikt promoveert altijd naar een Koningin.
 
 Het programma kent de mogelijkheid van een schaakspel tussen mens en mens, tussen mens en computer en tussen computer en computer. Er kunnen verschillende computerspelers kunnen zijn (met verschillende algorithmen die 'nadenken'). 
