@@ -9,7 +9,7 @@ public class Paard extends Stuk {
     }
 
     @Override
-    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+    public ArrayList<Zet> getMogelijkeZetten(Speelveld veld) {
         ArrayList<Zet> stukArrayList = new ArrayList<>();
 
         //linksboven 1

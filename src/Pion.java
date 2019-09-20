@@ -9,7 +9,7 @@ public class Pion extends Stuk {
     }
 
     @Override
-    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+    public ArrayList<Zet> getMogelijkeZetten(Speelveld veld) {
         ArrayList<Zet> stukArrayList = new ArrayList<>();
 
         //als het een witte pion is (nog rekening houden met array out of bounds)

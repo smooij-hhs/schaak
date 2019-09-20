@@ -9,7 +9,7 @@ public class Koning extends Stuk {
     }
 
     @Override
-    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+    public ArrayList<Zet> getMogelijkeZetten(Speelveld veld) {
         ArrayList<Zet> stukArrayList = new ArrayList<>();
         //linksboven
         if ((rij - 1 >= 0) && (kolom - 1 >= 0)) {

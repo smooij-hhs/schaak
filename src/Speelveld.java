@@ -91,7 +91,7 @@ public final class Speelveld {
         for (int i = 0; i < STUKKEN.length; i++) {
             for (int j = 0; j < STUKKEN[i].length; j++) {
                 if (STUKKEN[i][j] != null) {
-                    ArrayList<Zet> stukArrayList = STUKKEN[i][j].updateMogelijkeZetten(this);
+                    ArrayList<Zet> stukArrayList = STUKKEN[i][j].getMogelijkeZetten(this);
 
                     if (stukArrayList != null) {
                         ALLEMOGELIJKEZETTEN.addAll(stukArrayList);

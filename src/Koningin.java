@@ -9,7 +9,7 @@ public class Koningin extends Stuk {
     }
 
     @Override
-    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+    public ArrayList<Zet> getMogelijkeZetten(Speelveld veld) {
         ArrayList<Zet> stukArrayList = new ArrayList<>();
 
         int rijCoordinaat = rij;

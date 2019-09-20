@@ -15,7 +15,7 @@ public abstract class Stuk {
         this.kolom = kolom;
     }
 
-    public abstract ArrayList<Zet> updateMogelijkeZetten(Speelveld veld);
+    public abstract ArrayList<Zet> getMogelijkeZetten(Speelveld veld);
 
     public void setCoordinaten(int rij, int kolom) {
         this.rij = rij;
