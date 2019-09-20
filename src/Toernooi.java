@@ -28,6 +28,8 @@ public class Toernooi
 			game.SPELERS[1] = this.SPELERS[1];
 			winner = game.run(1000);
 			game.winnaar(winner);
+			game.current().printVeld();
+			System.out.println(new AISteven.Score(game.current()));
 			if (winner == null)
 			{
 				result += 1;
@@ -45,8 +47,8 @@ public class Toernooi
 
 	public static void main(String[] args)
 	{
-		Toernooi toernooi = new Toernooi(new Speler[]{new AISteven(3), new AISteven(0)}, 100, 3);
+		Toernooi toernooi = new Toernooi(new Speler[]{new AISteven(2), new AISteven(1)}, 20, 3);
 		int score = toernooi.run();
-		System.out.println("Wit wint " + (double) score / toernooi.ROUNDS / 2.0);
+		System.out.println("Wit wint " + 100.0 * score / toernooi.ROUNDS / 2.0 + "% van de punten.");
 	}
 }

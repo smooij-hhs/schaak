@@ -11,7 +11,7 @@ import java.util.Scanner;
  * */
 public class Game
 {
-
+	public static final Speler[] ALL = new Speler[]{new Mens(), new AiJaap(), new AISteven(4)};
 	private final ArrayList<Speelveld> HISTORY = new ArrayList<>();
 	public static final Scanner SCANNER = new Scanner(System.in);
 	public final Speler[] SPELERS;
@@ -30,13 +30,13 @@ public class Game
 	public static Speler select()
 	{
 		System.out.println("Spelers:");
-		for (int index = 0; index < Speler.ALL.length; index++)
+		for (int index = 0; index < ALL.length; index++)
 		{
-			System.out.println(index + ": " + Speler.ALL[index]);
+			System.out.println(index + ": " + ALL[index]);
 		}
 		System.out.print("Select: ");
 		int input = SCANNER.nextInt();
-		return Speler.ALL[input];
+		return ALL[input];
 	}
 
 	public static void main(String[] args)
@@ -49,7 +49,7 @@ public class Game
 		Game game = new Game(spelers);
 
 		Integer winner = game.run(1000);
-//		game.winnaar(winner);
+		game.winnaar(winner);
 	}
 
 	public Speelveld current()

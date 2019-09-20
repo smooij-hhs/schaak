@@ -3,7 +3,5 @@
  */
 public interface Speler
 {
-	Speler[] ALL = new Speler[]{new Mens(), new AiJaap(), new AISteven(4)};
-
 	Zet bepaalVolgendeZet(Speelveld speelveld);
 }

@@ -17,6 +17,7 @@ public class Mens implements Speler{
         int eindRij = 0;
         int eindKolom = 0;
 
+        speelveld.printVeld();
 
         while (!spelerHeeftGeldigeBeurtGemaakt) {
             while (!spelerMagGekozenStukBewegen) {
