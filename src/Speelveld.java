@@ -90,7 +90,8 @@ public final class Speelveld {
         final ArrayList<Zet> ALLEMOGELIJKEZETTEN = new ArrayList<>();
         for (int i = 0; i < STUKKEN.length; i++) {
             for (int j = 0; j < STUKKEN[i].length; j++) {
-                if (STUKKEN[i][j] != null) {
+                Stuk stuk = STUKKEN[i][j];
+                if (stuk != null && stuk.KLEUR == this.beurt) {
                     ArrayList<Zet> stukArrayList = STUKKEN[i][j].getMogelijkeZetten(this);
 
                     if (stukArrayList != null) {
