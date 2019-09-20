@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
@@ -35,14 +36,8 @@ public final class Speelveld {
                 }
             }
         }
-        if (!koningAanwezig) {
-            printVeld();
-            System.out.println(kleur +"heeft verloren");
-            return true;
+        return !koningAanwezig;
         }
-
-        return false;
-    }
 
     public void creeerStukken() {
         //alle zwarte stukken
