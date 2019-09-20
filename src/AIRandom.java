@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class AIRandom implements Speler
 {
-	public static final Random RANDOM = new Random();
+	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final AIRandom AI_RANDOM = new AIRandom();
 
 	private AIRandom()
