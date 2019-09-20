@@ -9,10 +9,10 @@ public class AiJaap implements Speler {
 
     }
 
-    public Zet bepaalVolgendeZet(Speelveld speelveld,boolean beurt) {
+    public Zet bepaalVolgendeZet(Speelveld speelveld) {
         //logica voor AI
             Random r = new Random();
-            ArrayList<Zet> mogelijkeZettenVoorDezeSpeler = bepaalMogelijkZettenVoorSpeler(speelveld,beurt);
+            ArrayList<Zet> mogelijkeZettenVoorDezeSpeler = bepaalMogelijkZettenVoorSpeler(speelveld);
             int willekeurigeIndex = r.nextInt(mogelijkeZettenVoorDezeSpeler.size());
 
             return mogelijkeZettenVoorDezeSpeler.get(willekeurigeIndex);
@@ -23,13 +23,13 @@ public class AiJaap implements Speler {
 
 
     }
-    private ArrayList<Zet> bepaalMogelijkZettenVoorSpeler(Speelveld speelveld,boolean beurt) {
-        ArrayList<Zet> ALLEMOGELIJKEZETTEN = speelveld.updateAlleMogelijkeZetten();
+    private ArrayList<Zet> bepaalMogelijkZettenVoorSpeler(Speelveld speelveld) {
+        ArrayList<Zet> ALLEMOGELIJKEZETTEN = speelveld.getAlleMogelijkeZetten();
         ArrayList<Zet> mogelijkeZettenVoorDezeSpeler = new ArrayList<>();
         for (int i = 0; i < ALLEMOGELIJKEZETTEN.size() - 1; i++) {
             int startRij = ALLEMOGELIJKEZETTEN.get(i).getSTARTRIJ();
             int startKolom = ALLEMOGELIJKEZETTEN.get(i).getSTARTKOLOM();
-            if (speelveld.getSTUKKEN()[startRij][startKolom].getKLEUR() == beurt) {
+            if (speelveld.getSTUKKEN()[startRij][startKolom].getKLEUR() == speelveld.beurt) {
                 mogelijkeZettenVoorDezeSpeler.add(ALLEMOGELIJKEZETTEN.get(i));
             }
         }

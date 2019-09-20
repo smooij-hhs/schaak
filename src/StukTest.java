@@ -5,11 +5,11 @@ import org.junit.Test;
  */
 public class StukTest {
 
-    @Test
+    /*@Test
     public void updateMogelijkeZettenKONING() {
         Speelveld veld = new Speelveld();
         veld.creeerStukken();
-        veld.updateAlleMogelijkeZetten();
+        veld.getAlleMogelijkeZetten();
         veld.move(new Zet(7, 4, 1, 5));
         System.out.println(veld.getSTUKKEN()[1][5].updateMogelijkeZetten(veld));
         assert veld.getSTUKKEN()[1][5].updateMogelijkeZetten(veld).size() == 8;
@@ -76,6 +76,6 @@ public class StukTest {
 
         assert veld2.getSTUKKEN()[5][0].updateMogelijkeZetten(veld2).size() != 2;
 
-    }
+    }*/
 
 }

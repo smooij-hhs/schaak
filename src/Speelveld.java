@@ -4,20 +4,23 @@ import java.util.ArrayList;
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
 public final class Speelveld {
-    private final Stuk[][] STUKKEN;
+    public final Stuk[][] STUKKEN;
+    public final boolean beurt;
 
 
     //spel wordt voor het eerst opgestart
-    public Speelveld() {
+    public Speelveld(boolean beurt) {
         STUKKEN = new Stuk[8][8];
 
         creeerStukken();
-        updateAlleMogelijkeZetten();
+
+        this.beurt=beurt;
     }
 
-    public Speelveld(Stuk[][] STUKKEN) {
+    public Speelveld(Stuk[][] STUKKEN,boolean beurt) {
         this.STUKKEN = STUKKEN;
-        updateAlleMogelijkeZetten();
+        getAlleMogelijkeZetten();
+        this.beurt=beurt;
     }
 
     public boolean checkGameOver() {
@@ -90,7 +93,7 @@ public final class Speelveld {
         System.out.println();
     }
 
-    public ArrayList<Zet> updateAlleMogelijkeZetten() {
+    public ArrayList<Zet> getAlleMogelijkeZetten() {
         final ArrayList<Zet> ALLEMOGELIJKEZETTEN = new ArrayList<>();
         for (int i = 0; i < STUKKEN.length; i++) {
             for (int j = 0; j < STUKKEN[i].length; j++) {
@@ -118,7 +121,7 @@ public final class Speelveld {
         //maak de plek leeg in de copy array
         stukkenCopy[zet.getSTARTRIJ()][zet.getSTARTKOLOM()] = null;
 
-        return new Speelveld(controleerPromotie(stukkenCopy));
+        return new Speelveld(controleerPromotie(stukkenCopy),!beurt);
     }
 
     private Stuk[][] copyArray() {

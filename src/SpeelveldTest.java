@@ -8,7 +8,7 @@ import java.util.Random;
 public class SpeelveldTest {
 
 
-    @Test
+    /*@Test
     public void promotieTestWIT() {
         Speelveld veld = new Speelveld();
         veld.getSTUKKEN()[1][1] = new Pion(true, 1, 1);
@@ -20,9 +20,9 @@ public class SpeelveldTest {
 
         assert veld2.getSTUKKEN()[0][1] instanceof Koningin;
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void promotieTestZWART() {
         Speelveld veld = new Speelveld();
         veld.getSTUKKEN()[6][1] = new Pion(false, 6, 1);
@@ -32,7 +32,7 @@ public class SpeelveldTest {
         veld2.printVeld();
 
         assert veld2.getSTUKKEN()[7][1] instanceof Koningin;
-    }
+    }*/
 
 
 

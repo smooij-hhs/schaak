@@ -12,11 +12,11 @@ import java.util.Scanner;
 public class Game {
 
     private final ArrayList<Speelveld> HISTORY = new ArrayList<>();
-    private boolean beurt;
+
 
     public Game() {
-        beurt = true;
-        HISTORY.add(new Speelveld());
+
+        HISTORY.add(new Speelveld(true));
     }
 
     public static void main(String[] args) {
@@ -57,18 +57,18 @@ public class Game {
             laatsteSpeelveld.printVeld();
 
 
-            if (beurt) {
+            if (laatsteSpeelveld.beurt) {
                 System.out.println("Wit is aan de beurt...");
-                gekozenZet = speler[0].bepaalVolgendeZet(laatsteSpeelveld,beurt);
+                gekozenZet = speler[0].bepaalVolgendeZet(laatsteSpeelveld);
             } else {
                 System.out.println("Zwart is aan de beurt...");
-                gekozenZet = speler[1].bepaalVolgendeZet(laatsteSpeelveld,beurt);
+                gekozenZet = speler[1].bepaalVolgendeZet(laatsteSpeelveld);
             }
 
 
             // huidigeveld wordt vervangen door een nieuw speelveld waarop de 2d array is overschreven
             HISTORY.add(laatsteSpeelveld.move(gekozenZet));
-            beurt = !beurt;
+
         }
 
     }

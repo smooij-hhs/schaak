@@ -7,7 +7,7 @@ public class Mens implements Speler{
     public Mens() {
     }
 
-    public Zet bepaalVolgendeZet(Speelveld speelveld, boolean beurt) {
+    public Zet bepaalVolgendeZet(Speelveld speelveld) {
         //logica voor mens
         Scanner sc = new Scanner(System.in);
         boolean spelerMagGekozenStukBewegen = false;
@@ -25,7 +25,7 @@ public class Mens implements Speler{
                 System.out.println("Welk stuk (kolom) wil je bewegen?");
                 startKolom = sc.nextInt();
 
-                if (speelveld.checkSpelerMagGekozenStukBewegen(startRij, startKolom, beurt)) {
+                if (speelveld.checkSpelerMagGekozenStukBewegen(startRij, startKolom,speelveld.beurt)) {
                     spelerMagGekozenStukBewegen = true;
                 }
             }
@@ -35,7 +35,7 @@ public class Mens implements Speler{
             System.out.println("Naar welk veld (kolom wil je dit stuk bewegen?");
             eindKolom = sc.nextInt();
 
-            if (speelveld.stukMagNaarGekozenVeld(new Zet(startRij, startKolom, eindRij, eindKolom),speelveld.updateAlleMogelijkeZetten())) {
+            if (speelveld.stukMagNaarGekozenVeld(new Zet(startRij, startKolom, eindRij, eindKolom),speelveld.getAlleMogelijkeZetten())) {
                 spelerHeeftGeldigeBeurtGemaakt = true;
             }
         }
