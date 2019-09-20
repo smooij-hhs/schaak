@@ -5,22 +5,13 @@ import java.util.ArrayList;
  */
 public abstract class Stuk {
     protected final boolean KLEUR;
-    protected int rij;
-    protected int kolom;
 
 
-    public Stuk(boolean KLEUR, int rij, int kolom) {
+    public Stuk(boolean KLEUR) {
         this.KLEUR = KLEUR;
-        this.rij = rij;
-        this.kolom = kolom;
     }
 
-    public abstract ArrayList<Zet> getMogelijkeZetten(Speelveld veld);
-
-    public void setCoordinaten(int rij, int kolom) {
-        this.rij = rij;
-        this.kolom = kolom;
-    }
+    public abstract ArrayList<Zet> getMogelijkeZetten(Speelveld veld, int rij, int kolom);
 
     public boolean getKLEUR() {
         return KLEUR;

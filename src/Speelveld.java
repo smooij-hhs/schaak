@@ -46,28 +46,28 @@ public final class Speelveld {
 
     public void creeerStukken() {
         //alle zwarte stukken
-        STUKKEN[0][0] = new Toren(false, 0, 0);
-        STUKKEN[0][1] = new Paard(false, 0, 1);
-        STUKKEN[0][2] = new Loper(false, 0, 2);
-        STUKKEN[0][3] = new Koningin(false, 0, 3);
-        STUKKEN[0][4] = new Koning(false, 0, 4);
-        STUKKEN[0][5] = new Loper(false, 0, 5);
-        STUKKEN[0][6] = new Paard(false, 0, 6);
-        STUKKEN[0][7] = new Toren(false, 0, 7);
+        STUKKEN[0][0] = new Toren(false);
+        STUKKEN[0][1] = new Paard(false);
+        STUKKEN[0][2] = new Loper(false);
+        STUKKEN[0][3] = new Koningin(false);
+        STUKKEN[0][4] = new Koning(false);
+        STUKKEN[0][5] = new Loper(false);
+        STUKKEN[0][6] = new Paard(false);
+        STUKKEN[0][7] = new Toren(false);
         //pionen
         for (int i = 0; i < 8; i++) {
-            STUKKEN[1][i] = new Pion(false, 1, i);
-            STUKKEN[6][i] = new Pion(true, 6, i);
+            STUKKEN[1][i] = new Pion(false);
+            STUKKEN[6][i] = new Pion(true);
         }
         //alle witte stukken
-        STUKKEN[7][0] = new Toren(true, 7, 0);
-        STUKKEN[7][1] = new Paard(true, 7, 1);
-        STUKKEN[7][2] = new Loper(true, 7, 2);
-        STUKKEN[7][3] = new Koningin(true, 7, 3);
-        STUKKEN[7][4] = new Koning(true, 7, 4);
-        STUKKEN[7][5] = new Loper(true, 7, 5);
-        STUKKEN[7][6] = new Paard(true, 7, 6);
-        STUKKEN[7][7] = new Toren(true, 7, 7);
+        STUKKEN[7][0] = new Toren(true);
+        STUKKEN[7][1] = new Paard(true);
+        STUKKEN[7][2] = new Loper(true);
+        STUKKEN[7][3] = new Koningin(true);
+        STUKKEN[7][4] = new Koning(true);
+        STUKKEN[7][5] = new Loper(true);
+        STUKKEN[7][6] = new Paard(true);
+        STUKKEN[7][7] = new Toren(true);
     }
 
     public void printVeld() {
@@ -92,7 +92,7 @@ public final class Speelveld {
             for (int j = 0; j < STUKKEN[i].length; j++) {
                 Stuk stuk = STUKKEN[i][j];
                 if (stuk != null && stuk.KLEUR == this.beurt) {
-                    ArrayList<Zet> stukArrayList = STUKKEN[i][j].getMogelijkeZetten(this);
+                    ArrayList<Zet> stukArrayList = STUKKEN[i][j].getMogelijkeZetten(this, i, j);
 
                     if (stukArrayList != null) {
                         ALLEMOGELIJKEZETTEN.addAll(stukArrayList);
