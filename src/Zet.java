@@ -35,6 +35,22 @@ public class Zet {
         return "Startrij: " + STARTRIJ + " Startkolom: " + STARTKOLOM + " Eindrij: " + EINDRIJ + " Eindkolom: " + EINDKOLOM + "\n";
     }
 
+    private static void controleerPromotie(Stuk[][] stukken) {
+
+        //witte promotie
+        for (int i = 0; i <= 7; i++) {
+            if (stukken[0][i] != null && stukken[0][i].magPromoveren()) {
+                stukken[0][i] = new Koningin(true, 0, i);
+            }
+        }
+        //zwarte promotie
+        for (int i = 0; i <= 7; i++) {
+            if (stukken[7][i] != null && stukken[7][i].magPromoveren()) {
+                stukken[7][i] = new Koningin(true, 7, i);
+            }
+        }
+    }
+
     public Speelveld move(Speelveld speelveld) {
         Stuk[][] stukkenCopy = speelveld.copyArray();
 
@@ -46,7 +62,7 @@ public class Zet {
 
         //maak de plek leeg in de copy array
         stukkenCopy[getSTARTRIJ()][getSTARTKOLOM()] = null;
-
-        return new Speelveld(speelveld.controleerPromotie(stukkenCopy),!speelveld.beurt);
+        controleerPromotie(stukkenCopy);
+        return new Speelveld(stukkenCopy,!speelveld.beurt);
     }
 }

@@ -113,23 +113,6 @@ public final class Speelveld {
         return stukkenCopy;
     }
 
-    public Stuk[][] controleerPromotie(Stuk[][] stukken) {
-
-        //witte promotie
-        for (int i = 0; i <= 7; i++) {
-            if (stukken[0][i] != null && stukken[0][i].magPromoveren()) {
-                stukken[0][i] = new Koningin(true, 0, i);
-            }
-        }
-        //zwarte promotie
-        for (int i = 0; i <= 7; i++) {
-            if (stukken[7][i] != null && stukken[7][i].magPromoveren()) {
-                stukken[7][i] = new Koningin(true, 7, i);
-            }
-        }
-        return stukken;
-    }
-
     public boolean checkSpelerMagGekozenStukBewegen(int rij, int kolom, boolean beurt) {
         if (rij > 7 || rij < 0 || kolom > 7 || kolom < 0) {
             System.out.println("Deze coordinaten vallen buiten het bord");
