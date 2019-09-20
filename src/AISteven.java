@@ -27,11 +27,11 @@ public class AISteven implements Speler
 	public int score(Speelveld speelveld)
 	{
 		int result = 0;
-		for (int i = 0; i < 8; i++)
+		for (int rij = 0; rij < 8; rij++)
 		{
-			for (int j = 0; j < 8; j++)
+			for (int kolom = 0; kolom < 8; kolom++)
 			{
-				Stuk stuk = speelveld.STUKKEN[i][j];
+				Stuk stuk = speelveld.STUKKEN[rij][kolom];
 				if (stuk != null && stuk.KLEUR == speelveld.beurt)
 				{
 					result += score(stuk);
@@ -44,18 +44,25 @@ public class AISteven implements Speler
 
 	public int score(Speelveld speelveld, int depth)
 	{
-		Integer result = null;
+		Zet best = null;
+		int result = 0;
 
 		if (0 < depth)
 		{
 			for (Zet zet : speelveld.getAlleMogelijkeZetten())
 			{
 				int scoreBest = score(zet.move(speelveld), depth - 1);
-				if (result == null || result < scoreBest)
+				if (best == null || result < scoreBest)
 				{
+					best = zet;
 					result = scoreBest;
+
 				}
 			}
+		}
+		else
+		{
+			result = score(speelveld);
 		}
 		return -result;
 	}
@@ -67,7 +74,7 @@ public class AISteven implements Speler
 		int scoreBest = 0;
 		for (Zet zet : speelveld.getAlleMogelijkeZetten())
 		{
-			int score = score(zet.move(speelveld), depth - 1);
+			int score = score(zet.move(speelveld), depth);
 			if (result == null || scoreBest < score)
 			{
 				result = zet;
@@ -75,5 +82,11 @@ public class AISteven implements Speler
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "AISteven";
 	}
 }

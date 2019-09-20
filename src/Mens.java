@@ -42,4 +42,9 @@ public class Mens implements Speler{
         return new Zet(startRij, startKolom, eindRij, eindKolom);
     }
 
+    @Override
+    public String toString()
+    {
+        return "Mens";
+    }
 }

@@ -38,4 +38,11 @@ public class AiJaap implements Speler {
         return mogelijkeZettenVoorDezeSpeler;
 
     }
+
+    @Override
+    public String toString()
+    {
+        return "AIJaap";
+    }
+
 }
