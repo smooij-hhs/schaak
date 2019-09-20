@@ -51,7 +51,7 @@ public class Game {
             }
         }
 
-        while (!HISTORY.get(HISTORY.size() - 1).checkGameOver()) {
+        while (HISTORY.get(HISTORY.size() - 1).alleKoningenAanwezig()) {
             Speelveld laatsteSpeelveld = HISTORY.get(HISTORY.size() - 1);
             Zet gekozenZet;
             laatsteSpeelveld.printVeld();
@@ -67,7 +67,7 @@ public class Game {
 
 
             // huidigeveld wordt vervangen door een nieuw speelveld waarop de 2d array is overschreven
-            HISTORY.add(laatsteSpeelveld.move(gekozenZet));
+            HISTORY.add(gekozenZet.move(laatsteSpeelveld));
 
         }
 

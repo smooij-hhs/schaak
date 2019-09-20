@@ -23,31 +23,24 @@ public final class Speelveld {
         this.beurt=beurt;
     }
 
-    public boolean checkGameOver() {
-        boolean koningWit = false;
-        boolean koningZwart = false;
+    public boolean checkKleurHeeftVerloren(boolean kleur) {
+        boolean koningAanwezig = false;
+
         for (int i = 0; i < getSTUKKEN().length; i++) {
             for (int j = 0; j < getSTUKKEN()[i].length; j++) {
                 if (getSTUKKEN()[i][j] instanceof Koning) {
-                    if (getSTUKKEN()[i][j].KLEUR) {
-                        koningWit = true;
-                    }
-                    if (!getSTUKKEN()[i][j].KLEUR) {
-                        koningZwart = true;
+                    if (getSTUKKEN()[i][j].KLEUR==kleur) {
+                        koningAanwezig = true;
                     }
                 }
             }
         }
-        if (koningWit && !koningZwart) {
+        if (!koningAanwezig) {
             printVeld();
-            System.out.println("Wit heeft gewonnen");
+            System.out.println(kleur +"heeft verloren");
             return true;
         }
-        if (!koningWit && koningZwart) {
-            printVeld();
-            System.out.println("Zwart heeft gewonnen");
-            return true;
-        }
+
         return false;
     }
 
@@ -109,22 +102,7 @@ public final class Speelveld {
         return ALLEMOGELIJKEZETTEN;
     }
 
-    public Speelveld move(Zet zet) {
-        Stuk[][] stukkenCopy = copyArray();
-
-        //het stuk op de startPlek van 'stukken' array wordt verplaatst naar de eindplek  bij de 'stukkenCopy' array
-        stukkenCopy[zet.getEINDRIJ()][zet.getEINDKOLOM()] = STUKKEN[zet.getSTARTRIJ()][zet.getSTARTKOLOM()];
-
-        //verander de interne coordinaten van het verplaatste stuk
-        stukkenCopy[zet.getEINDRIJ()][zet.getEINDKOLOM()].setCoordinaten(zet.getEINDRIJ(), zet.getEINDKOLOM());
-
-        //maak de plek leeg in de copy array
-        stukkenCopy[zet.getSTARTRIJ()][zet.getSTARTKOLOM()] = null;
-
-        return new Speelveld(controleerPromotie(stukkenCopy),!beurt);
-    }
-
-    private Stuk[][] copyArray() {
+    public Stuk[][] copyArray() {
         Stuk[][] stukkenCopy = new Stuk[8][8];
         for (int i = 0; i < stukkenCopy.length; i++) {
             for (int j = 0; j < stukkenCopy[i].length; j++) {
@@ -134,7 +112,7 @@ public final class Speelveld {
         return stukkenCopy;
     }
 
-    private Stuk[][] controleerPromotie(Stuk[][] stukken) {
+    public Stuk[][] controleerPromotie(Stuk[][] stukken) {
 
         //witte promotie
         for (int i = 0; i <= 7; i++) {
@@ -184,5 +162,9 @@ public final class Speelveld {
 
     public Stuk[][] getSTUKKEN() {
         return STUKKEN;
+    }
+
+    public boolean alleKoningenAanwezig(){
+        return !checkKleurHeeftVerloren(true)&&!checkKleurHeeftVerloren(false);
     }
 }

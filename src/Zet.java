@@ -34,4 +34,19 @@ public class Zet {
     public String toString() {
         return "Startrij: " + STARTRIJ + " Startkolom: " + STARTKOLOM + " Eindrij: " + EINDRIJ + " Eindkolom: " + EINDKOLOM + "\n";
     }
+
+    public Speelveld move(Speelveld speelveld) {
+        Stuk[][] stukkenCopy = speelveld.copyArray();
+
+        //het stuk op de startPlek van 'stukken' array wordt verplaatst naar de eindplek  bij de 'stukkenCopy' array
+        stukkenCopy[getEINDRIJ()][getEINDKOLOM()] = speelveld.STUKKEN[getSTARTRIJ()][getSTARTKOLOM()];
+
+        //verander de interne coordinaten van het verplaatste stuk
+        stukkenCopy[getEINDRIJ()][getEINDKOLOM()].setCoordinaten(getEINDRIJ(), getEINDKOLOM());
+
+        //maak de plek leeg in de copy array
+        stukkenCopy[getSTARTRIJ()][getSTARTKOLOM()] = null;
+
+        return new Speelveld(speelveld.controleerPromotie(stukkenCopy),!speelveld.beurt);
+    }
 }
