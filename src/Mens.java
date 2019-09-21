@@ -1,51 +1,58 @@
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 29-8-2019
  */
-public class Mens implements Speler{
-    public Mens() {
-    }
+public class Mens implements Speler
+{
+	public Mens()
+	{
+	}
 
-    public Zet bepaalVolgendeZet(Speelveld speelveld) {
-        //logica voor mens
-        Scanner sc = new Scanner(System.in);
-        boolean spelerMagGekozenStukBewegen = false;
-        boolean spelerHeeftGeldigeBeurtGemaakt = false;
-        int startRij = 0;
-        int startKolom = 0;
-        int eindRij = 0;
-        int eindKolom = 0;
+	public boolean validStart(List<Zet> alleMogelijkeZetten, int rij, int kolom)
+	{
+		boolean result = false;
+		for (Zet zet : alleMogelijkeZetten)
+		{
+			result |= zet.getSTARTRIJ() == rij && zet.getSTARTKOLOM() == kolom;
+		}
+		return result;
+	}
 
-        speelveld.printVeld();
+	public Zet bepaalVolgendeZet(Speelveld speelveld)
+	{
+		speelveld.printVeld();
 
-        while (!spelerHeeftGeldigeBeurtGemaakt) {
-            while (!spelerMagGekozenStukBewegen) {
-                System.out.println("Welk stuk (rij) wil je bewegen?");
-                startRij = sc.nextInt();
-                System.out.println("Welk stuk (kolom) wil je bewegen?");
-                startKolom = sc.nextInt();
+		List<Zet> alleMogelijkeZetten = speelveld.getAlleMogelijkeZetten();
+		Zet result = null;
+		while (result == null)
+		{
+			int startRij;
+			int startKolom;
+			do
+			{
+				System.out.print("Welk stuk (rij) wil je bewegen? ");
+				startRij = Game.SCANNER.nextInt();
+				System.out.print("Welk stuk (kolom) wil je bewegen? ");
+				startKolom = Game.SCANNER.nextInt();
+			}
+			while (!validStart(alleMogelijkeZetten, startRij, startKolom));
+			System.out.print("Naar welk veld (rij) wil je dit stuk bewegen? ");
+			int eindRij = Game.SCANNER.nextInt();
+			System.out.print("Naar welk veld (kolom wil je dit stuk bewegen? ");
+			int eindKolom = Game.SCANNER.nextInt();
+			Zet zet = new Zet(startRij, startKolom, eindRij, eindKolom);
+			if (alleMogelijkeZetten.contains(zet))
+			{
+				result = zet;
+			}
+		}
+		return result;
+	}
 
-                if (speelveld.checkSpelerMagGekozenStukBewegen(startRij, startKolom,speelveld.beurt)) {
-                    spelerMagGekozenStukBewegen = true;
-                }
-            }
-
-            System.out.println("Naar welk veld (rij) wil je dit stuk bewegen?");
-            eindRij = sc.nextInt();
-            System.out.println("Naar welk veld (kolom wil je dit stuk bewegen?");
-            eindKolom = sc.nextInt();
-
-            if (speelveld.stukMagNaarGekozenVeld(new Zet(startRij, startKolom, eindRij, eindKolom),speelveld.getAlleMogelijkeZetten())) {
-                spelerHeeftGeldigeBeurtGemaakt = true;
-            }
-        }
-        return new Zet(startRij, startKolom, eindRij, eindKolom);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Mens";
-    }
+	@Override
+	public String toString()
+	{
+		return "Mens";
+	}
 }

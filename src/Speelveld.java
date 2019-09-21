@@ -81,12 +81,12 @@ public final class Speelveld {
         System.out.println();
     }
 
-    public ArrayList<Zet> getAlleMogelijkeZetten() {
+    public ArrayList<Zet> getAlleMogelijkeZetten(boolean kleur) {
         final ArrayList<Zet> ALLEMOGELIJKEZETTEN = new ArrayList<>();
         for (int i = 0; i < STUKKEN.length; i++) {
             for (int j = 0; j < STUKKEN[i].length; j++) {
                 Stuk stuk = STUKKEN[i][j];
-                if (stuk != null && stuk.KLEUR == this.beurt) {
+                if (stuk != null && stuk.KLEUR == kleur) {
                     ArrayList<Zet> stukArrayList = STUKKEN[i][j].getMogelijkeZetten(this, i, j);
 
                     if (stukArrayList != null) {
@@ -97,6 +97,11 @@ public final class Speelveld {
         }
         return ALLEMOGELIJKEZETTEN;
     }
+
+    public ArrayList<Zet> getAlleMogelijkeZetten()
+	{
+		return getAlleMogelijkeZetten(this.beurt);
+	}
 
     public Stuk[][] copyArray() {
         Stuk[][] stukkenCopy = new Stuk[8][8];

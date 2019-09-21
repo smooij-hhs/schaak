@@ -62,4 +62,16 @@ public class Zet {
         controleerPromotie(stukkenCopy);
         return new Speelveld(stukkenCopy,!speelveld.beurt);
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean result = object instanceof Zet;
+        if (result)
+        {
+            Zet that = (Zet)object;
+            result = this.getSTARTRIJ() == that.getSTARTRIJ() && this.getSTARTKOLOM() == that.getSTARTKOLOM() && this.getEINDRIJ() == that.getEINDRIJ() && this.getEINDKOLOM() == that.getEINDKOLOM();
+        }
+        return result;
+    }
 }

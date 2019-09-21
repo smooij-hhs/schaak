@@ -57,7 +57,7 @@ public class AISteven implements Speler
 
 		public Score(Speelveld speelveld)
 		{
-			this(points(speelveld), speelveld.getAlleMogelijkeZetten().size());
+			this(points(speelveld), speelveld.getAlleMogelijkeZetten().size() - speelveld.getAlleMogelijkeZetten(!speelveld.beurt).size());
 		}
 
 
