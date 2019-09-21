@@ -4,12 +4,12 @@ import java.util.ArrayList;
  * Created by Jaap van Gestel <18139027@student.hhs.nl> on 21-8-2019
  */
 public class Koning extends Stuk {
-    public Koning(boolean kleur, int rij, int kolom) {
-        super(kleur, rij, kolom);
+    public Koning(boolean kleur) {
+        super(kleur);
     }
 
     @Override
-    public ArrayList<Zet> updateMogelijkeZetten(Speelveld veld) {
+    public ArrayList<Zet> getMogelijkeZetten(Speelveld veld, int rij, int kolom) {
         ArrayList<Zet> stukArrayList = new ArrayList<>();
         //linksboven
         if ((rij - 1 >= 0) && (kolom - 1 >= 0)) {

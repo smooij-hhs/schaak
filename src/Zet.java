@@ -35,18 +35,43 @@ public class Zet {
         return "Startrij: " + STARTRIJ + " Startkolom: " + STARTKOLOM + " Eindrij: " + EINDRIJ + " Eindkolom: " + EINDKOLOM + "\n";
     }
 
+    private static void controleerPromotie(Stuk[][] stukken) {
+
+        //witte promotie
+        for (int i = 0; i <= 7; i++) {
+            if (stukken[0][i] != null && stukken[0][i].magPromoveren()) {
+                stukken[0][i] = new Koningin(true);
+            }
+        }
+        //zwarte promotie
+        for (int i = 0; i <= 7; i++) {
+            if (stukken[7][i] != null && stukken[7][i].magPromoveren()) {
+                stukken[7][i] = new Koningin(true);
+            }
+        }
+    }
+
     public Speelveld move(Speelveld speelveld) {
         Stuk[][] stukkenCopy = speelveld.copyArray();
 
         //het stuk op de startPlek van 'stukken' array wordt verplaatst naar de eindplek  bij de 'stukkenCopy' array
         stukkenCopy[getEINDRIJ()][getEINDKOLOM()] = speelveld.STUKKEN[getSTARTRIJ()][getSTARTKOLOM()];
 
-        //verander de interne coordinaten van het verplaatste stuk
-        stukkenCopy[getEINDRIJ()][getEINDKOLOM()].setCoordinaten(getEINDRIJ(), getEINDKOLOM());
-
         //maak de plek leeg in de copy array
         stukkenCopy[getSTARTRIJ()][getSTARTKOLOM()] = null;
+        controleerPromotie(stukkenCopy);
+        return new Speelveld(stukkenCopy,!speelveld.beurt);
+    }
 
-        return new Speelveld(speelveld.controleerPromotie(stukkenCopy),!speelveld.beurt);
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean result = object instanceof Zet;
+        if (result)
+        {
+            Zet that = (Zet)object;
+            result = this.getSTARTRIJ() == that.getSTARTRIJ() && this.getSTARTKOLOM() == that.getSTARTKOLOM() && this.getEINDRIJ() == that.getEINDRIJ() && this.getEINDKOLOM() == that.getEINDKOLOM();
+        }
+        return result;
     }
 }
